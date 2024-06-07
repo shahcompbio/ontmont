@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-from ointmont.utils import (remove_duplicates_from_tra_table, 
+from .utils import (remove_duplicates_from_tra_table, 
     filter_sv_with_breakpoint_at_contig_ends, filter_breakpoints_at_contig_ends, enumerate_breakpoints)
-from ontmont.irs import (get_best_onesided_ir, get_best_ir_within_breakpoints, 
+from .irs import (get_best_onesided_ir, get_best_ir_within_breakpoints, 
     get_best_holliday_junctions, get_best_ir_within_segment)
 
 def make_seg_table(bundle, seg_supports):

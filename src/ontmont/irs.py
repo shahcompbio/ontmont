@@ -3,8 +3,8 @@ from operator import xor
 
 import pandas as pd
 
-from ontmont.datatypes import SplitAlignment
-from ontmont.utils import reverse_complement, shuffle_seq
+from .datatypes import SplitAlignment
+from .utils import reverse_complement, shuffle_seq
 
 
 def calc_distance_score(dist1, dist2, dist_cutoff1, dist_cutoff2):

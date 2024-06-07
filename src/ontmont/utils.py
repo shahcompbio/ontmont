@@ -3,7 +3,7 @@ import random
 import pandas as pd
 import numpy as np
 
-from ontmont.datatypes import Breakpoint, BreakpointChain, SplitAlignment
+from .datatypes import Breakpoint, BreakpointChain, SplitAlignment
 
 def remove_duplicates_from_tra_table(tra_df):
     df = pd.DataFrame(columns = tra_df.columns)
