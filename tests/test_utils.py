@@ -8,18 +8,6 @@ import numpy as np
 from ontmont.utils import remove_duplicates_from_tra_table, filter_sv_with_breakpoint_at_contig_ends
 
 
-@pytest.fixture
-def config():
-    CONFIG = """
-    reference:
-        '1': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_GFPVector.fa
-        '2': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PGBD5Vector.fa
-        '3': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PiggyBacVector.fa
-        '5': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_DelPBEF1_PGBD5Vector.fa
-    """
-    return yaml.safe_load(CONFIG)
-
-
 def test_remove_duplicates_from_tra_tables():
     tra_df_columns = ['chrom1', 'pos1', 'ori1', 'chrom2', 'pos2', 'ori2', 'support', 
                       'u1_u2_score', 'd1_d2_score', 'u1_d2r_score', 'd1_u2r_score',
