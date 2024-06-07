@@ -1,6 +1,7 @@
 [project]
 name = "ontmont"
-dynamic = ["version"]
+version = "0.0.1"
+#dynamic = ["version"]
 authors = [
     { name="Seongmin Choi", email="soymintc@gmail.com" },
 ]
