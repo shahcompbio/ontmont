@@ -1,0 +1,11 @@
+.snakemake/
+.vscode/
+logs/
+resources/
+results/
+__pycache__
+*.ipynb
+.ipynb_checkpoints
+build/
+dist/
+*.egg-info/
