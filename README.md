@@ -1,4 +1,4 @@
-# ONTmONT
+# 🅞🅝🅣𝓂🅞🅝🅣
 This is a package for analyzing split reads from ONT (Oxford Nanopore Technologies) alignment data. 
 
 ## Usage
