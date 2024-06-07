@@ -135,12 +135,11 @@ def filter_sv_with_breakpoint_at_contig_ends(df):
             assert 'chrom' in df_cols, df_cols
             df[chrom_col] = df['chrom']
             
-    data = pd.DataFrame(columns=df_cols)
     df['dist1s'] = np.abs(df['pos1'] - 1)
     df['dist1e'] = np.abs(df['pos1'] - 1 - df['chrom1'].map(vector_lengths))
     df['dist2s'] = np.abs(df['pos2'] - 1)
     df['dist2e'] = np.abs(df['pos2'] - 1 - df['chrom2'].map(vector_lengths))
-    df = df.fillna(np.inf)
+    df[['dist1s', 'dist1e', 'dist2s', 'dist2e']] = df[['dist1s', 'dist1e', 'dist2s', 'dist2e']].astype(float).fillna(np.inf)
     df = df[(df['dist1s'] >= 3) & (df['dist1e'] >= 3) & (df['dist2s'] >= 3) & (df['dist2e'] >= 3)]
     df = df[df_cols]
     return df
