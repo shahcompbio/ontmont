@@ -20,10 +20,12 @@ Issues = "https://github.com/shahcompbio/ontmont/issues"
 [build-system]
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
-dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools_scm]
 # Empty is fine
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 dev = ["pytest"]
