@@ -1,0 +1,29 @@
+[project]
+name = "ontmont"
+dynamic = ["version"]
+authors = [
+    { name="Seongmin Choi", email="soymintc@gmail.com" },
+]
+description = "A package to analyze split reads of ONT (Oxford Nanopore Technologies) long read data"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/shahcompbio/ontmont"
+Issues = "https://github.com/shahcompbio/ontmont/issues"
+
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools_scm]
+# Empty is fine
+
+[project.optional-dependencies]
+dev = ["pytest"]

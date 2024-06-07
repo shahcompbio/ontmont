@@ -1,0 +1,7 @@
+numpy
+pandas
+pyfaidx
+pytest
+PyYAML
+setuptools
+swalign
