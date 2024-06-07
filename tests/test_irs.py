@@ -3,8 +3,9 @@ import swalign
 import pyfaidx 
 import pandas as pd
 
-from transposon.irenum import (Breakpoint, BreakpointPair)
-from transposon.irs import (reverse_complement, calc_distance_score, get_best_onesided_ir, align_two_sequences,
+from ontmont.datatypes import (Breakpoint, BreakpointPair)
+from ontmont.utils import reverse_complement
+from ontmont.irs import (calc_distance_score, get_best_onesided_ir, align_two_sequences,
     get_onesided_ir, get_best_ir_within_breakpoints, get_best_ir_within_segment,
     calc_pval_onesided_ir, calc_pval_bilateral_ir, calc_pval_segmental_ir, calc_pval_holliday,
     overlaps, is_holliday_junction, get_best_holliday_junctions, get_breakpoint_pair_seq_data)
