@@ -1,6 +1,7 @@
 import yaml
 import swalign
 import pyfaidx 
+import pytest
 import pandas as pd
 
 from ontmont.datatypes import (Breakpoint, BreakpointPair)
@@ -10,59 +11,57 @@ from ontmont.irs import (calc_distance_score, get_best_onesided_ir, align_two_se
     calc_pval_onesided_ir, calc_pval_bilateral_ir, calc_pval_segmental_ir, calc_pval_holliday,
     overlaps, is_holliday_junction, get_best_holliday_junctions, get_breakpoint_pair_seq_data)
 
-CONFIG = """
-palindrome:
-    match: 1
-    mismatch: -2
-    gap_penalty: -3
-    gap_extension_penalty: -1
-    cutoff1: 6
-    cutoff2: 8
-    bp_near_breakpoint: 5
-    random_seed: 42
-    n_iter: 1000
-    margin: 30
+@pytest.fixture
+def config():
+    CONFIG = """
+    palindrome:
+        match: 1
+        mismatch: -2
+        gap_penalty: -3
+        gap_extension_penalty: -1
+        cutoff1: 6
+        cutoff2: 8
+        bp_near_breakpoint: 5
+        random_seed: 42
+        n_iter: 1000
+        margin: 30
 
-holliday:
-    match: 1
-    mismatch: -2
-    gap_penalty: -2
-    gap_extension_penalty: -1
-    distance_cutoff1: 1
-    distance_cutoff2: 3
-    score_cutoff: 5
-    random_seed: 42
-    n_iter: 1000
-    margin: 15
+    holliday:
+        match: 1
+        mismatch: -2
+        gap_penalty: -2
+        gap_extension_penalty: -1
+        distance_cutoff1: 1
+        distance_cutoff2: 3
+        score_cutoff: 5
+        random_seed: 42
+        n_iter: 1000
+        margin: 15
 
-reference:
-    '1': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_GFPVector.fa
-    '2': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PGBD5Vector.fa
-    '3': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PiggyBacVector.fa
-    '5': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_DelPBEF1_PGBD5Vector.fa
-"""
-config = yaml.safe_load(CONFIG)
+    reference:
+        '1': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_GFPVector.fa
+        '2': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PGBD5Vector.fa
+        '3': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_PBEF1_PiggyBacVector.fa
+        '5': /data1/shahs3/users/chois7/projects/transposon/resources/GRCh38_DelPBEF1_PGBD5Vector.fa
+    """
+    return yaml.safe_load(CONFIG)
 
 
-def get_sw_palindrome():
-    config = yaml.load(CONFIG, Loader=yaml.Loader)
-    scoring_palindrome = swalign.NucleotideScoringMatrix(float(config['palindrome']['match']), float(config['palindrome']['mismatch']))
-    sw_palindrome = swalign.LocalAlignment(scoring_palindrome, globalalign=False,
+@pytest.fixture
+def sw_palindrome(config):
+    scoring = swalign.NucleotideScoringMatrix(float(config['palindrome']['match']), float(config['palindrome']['mismatch']))
+    sw = swalign.LocalAlignment(scoring, globalalign=False,
         gap_penalty=float(config['palindrome']['gap_penalty']), 
         gap_extension_penalty=float(config['palindrome']['gap_extension_penalty']))
-    return sw_palindrome
+    return sw
 
-def get_sw_holliday():
-    config = yaml.load(CONFIG, Loader=yaml.Loader)
-    scoring_holliday = swalign.NucleotideScoringMatrix(float(config['holliday']['match']), float(config['holliday']['mismatch']))
-    sw_holliday = swalign.LocalAlignment(scoring_holliday, globalalign=False,
+@pytest.fixture
+def sw_holliday(config):
+    scoring = swalign.NucleotideScoringMatrix(float(config['holliday']['match']), float(config['holliday']['mismatch']))
+    sw = swalign.LocalAlignment(scoring, globalalign=False,
         gap_penalty=float(config['holliday']['gap_penalty']), 
         gap_extension_penalty=float(config['holliday']['gap_extension_penalty']))
-    return sw_holliday
-
-SW_PALINDROME = get_sw_palindrome()
-SW_HOLLIDAY = get_sw_holliday()
-
+    return sw
 
 # TESTS
 
@@ -79,14 +78,14 @@ def test_calc_distance_score():
     assert calc_distance_score(dist1=4, dist2=4, dist_cutoff1=1, dist_cutoff2=3) == 0
 
 
-def test_align_two_sequences():
+def test_align_two_sequences(config, sw_palindrome):
     genome = pyfaidx.Fasta(config['reference']['3'])
 
     brk = Breakpoint('PBEF1NeoTransposon', 1478, '+')
     brk.get_breakpoint_seqs(margin=50, genome=genome)
     seq1 = brk.upstream
     seq2 = brk.downstream
-    sw = SW_PALINDROME
+    sw = sw_palindrome
     aln = align_two_sequences(seq1, seq2, sw, rc=True)
     up_start, up_end = aln.up_coords
     down_start, down_end = aln.down_coords
@@ -104,9 +103,9 @@ def test_align_two_sequences():
     assert aln.seq2[down_start:down_end] == 'AAAAAAA', aln.seq2[down_start:down_end]
 
 
-def test_get_best_onesided_ir():
+def test_get_best_onesided_ir(sw_palindrome):
     seq = 'TTTTTTTTTTTTAGCACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTGTGCTAA'
-    sw = SW_PALINDROME
+    sw = sw_palindrome
     direction = 'up' # sequence is upstream of a breakpoint
 
     aln = get_best_onesided_ir(seq, direction, sw, margins=[15, 30, 60])
@@ -124,8 +123,8 @@ def test_get_best_onesided_ir():
     aln = get_best_onesided_ir(seq, direction, sw, margins=[15]) # , ((up_start, up_end), (down_start, down_end))
     assert aln == None, aln
 
-def test_get_onesided_ir():
-    sw = SW_PALINDROME
+def test_get_onesided_ir(sw_palindrome):
+    sw = sw_palindrome
     seq = 'TTAGCACTTTTTTTTTTTTTGTGCTAAAAA'
     aln = get_onesided_ir(seq, sw) # , ((up_start, up_end), (down_start, down_end))
     up_start, up_end = aln.up_coords
@@ -139,8 +138,8 @@ def test_get_onesided_ir():
     )
     assert len(seq) - down_end == 3, aln.dump() 
 
-def test_calc_pval_onesided_ir_1():
-    sw = SW_PALINDROME
+def test_calc_pval_onesided_ir_1(sw_palindrome):
+    sw = sw_palindrome
     seq = 'GGGGAAAAATTTTTGGGGGGGAAAAATTTTT'
     direction = 'up'
     aln = get_onesided_ir(seq, sw)
@@ -149,8 +148,8 @@ def test_calc_pval_onesided_ir_1():
     assert src_score == 10.0, src_score
     assert pval == 0.0, pval
 
-def test_calc_pval_onesided_ir_2():
-    sw = SW_PALINDROME
+def test_calc_pval_onesided_ir_2(sw_palindrome):
+    sw = sw_palindrome
     seq = 'CCCTTGGGGAAGGGTGGGGTGACGCGGGGG' # downstream
     direction = 'down'
     aln = get_onesided_ir(seq, sw)
@@ -159,8 +158,8 @@ def test_calc_pval_onesided_ir_2():
     assert src_score == 5.0, src_score
     assert pval == 0.01, pval
 
-def test_calc_pval_onesided_ir_3():
-    sw = SW_PALINDROME
+def test_calc_pval_onesided_ir_3(sw_palindrome):
+    sw = sw_palindrome
     seq = 'GGGGGCGCAGTGGGGTGGGAAGGGGTTCCC' # upstream, reverse of seq from _2
     direction = 'up'
     aln = get_onesided_ir(seq, sw)
@@ -177,18 +176,18 @@ def test_overlaps():
     seg2 = (13, 15)
     assert overlaps(seg1, seg2), (seg1, seg2)
 
-def test_get_best_ir_within_breakpoints():
+def test_get_best_ir_within_breakpoints(sw_palindrome):
     seq1 = 'TTTTTTTTTTTTTCGCGAGCCGTCGTTGCGCTTGTGCTAA'
     seq2 = 'TTAGCACTTTTTTTTTTTTTTTTTTTTTTTAAAAAAAAAA'
-    sw = SW_PALINDROME
+    sw = sw_palindrome
 
     aln = get_best_ir_within_breakpoints(seq1, seq2, sw, dist_cutoff1=1, dist_cutoff2=3, margins=[15, 40])
     assert aln.score == 7, aln.dump()
     assert aln.seq1[aln.up_coords[0]:aln.up_coords[1]] == 'GTGCTAA', aln.dump()
     assert aln.seq2[aln.down_coords[0]:aln.down_coords[1]] == 'TTAGCAC', aln.dump()
 
-def test_calc_pval_bilateral_ir_1():
-    sw = SW_PALINDROME
+def test_calc_pval_bilateral_ir_1(sw_palindrome):
+    sw = sw_palindrome
     seq1 = 'AAAAAAAAAA'
     seq2 = 'TTTTTTTTTT'
     aln = align_two_sequences(seq1, seq2, sw, rc=True)
@@ -196,8 +195,8 @@ def test_calc_pval_bilateral_ir_1():
     pval = calc_pval_bilateral_ir(seq1, seq2, sw, src_score, dist_cutoff1=1, dist_cutoff2=3, n_iter=100, random_seed=42)
     assert pval == 1, pval
 
-def test_calc_pval_bilateral_ir_2():
-    sw = SW_PALINDROME
+def test_calc_pval_bilateral_ir_2(sw_palindrome):
+    sw = sw_palindrome
     seq1 = 'AAAAAAAAAA'
     seq2 = 'TTAAATTTTT'
     aln = align_two_sequences(seq1, seq2, sw, rc=True)
@@ -205,9 +204,9 @@ def test_calc_pval_bilateral_ir_2():
     pval = calc_pval_bilateral_ir(seq1, seq2, sw, src_score, dist_cutoff1=100, dist_cutoff2=10, n_iter=10, random_seed=42)
     assert pval == 0.3, pval
 
-def test_get_best_ir_within_segment():
+def test_get_best_ir_within_segment(config, sw_palindrome):
     genome = pyfaidx.Fasta(config['reference']['3'])
-    sw = SW_PALINDROME
+    sw = sw_palindrome
     margin = 50
     chrom1, pos1, ori1 = 'PBEF1NeoTransposon', 1478, '-'
     chrom2, pos2, ori2 = 'PBEF1NeoTransposon', 4996, '+'
@@ -225,8 +224,8 @@ def test_get_best_ir_within_segment():
     start2, end2 = pair.aln_segment.down_coords
     assert pair.brk2.seq_rearranged[start2:end2] == 'GATTATCTTTCTAGGGTTAA', pair.brk2.seq_rearranged[start2:end2]
 
-def test_calc_pval_segmental_ir_1():
-    sw = SW_PALINDROME
+def test_calc_pval_segmental_ir_1(sw_palindrome):
+    sw = sw_palindrome
     seq1 = 'AAAAAAAAAA'
     seq2 = 'TTTTTTTTTT'
     ori1 = '-'
@@ -238,8 +237,8 @@ def test_calc_pval_segmental_ir_1():
                                   dist_cutoff1=1, dist_cutoff2=3, n_iter=100, random_seed=42)
     assert pval == 1, pval # shuffling sequence doesn't affect aln
 
-def test_calc_pval_segmental_ir_2():
-    sw = SW_PALINDROME
+def test_calc_pval_segmental_ir_2(sw_palindrome):
+    sw = sw_palindrome
     seq1 = 'AAAAGGCGG'
     seq2 = 'TTAAATTTT'
     ori1 = '-'
@@ -250,10 +249,10 @@ def test_calc_pval_segmental_ir_2():
                                   dist_cutoff1=1000, dist_cutoff2=10, n_iter=10, random_seed=42)
     assert pval == 0.1, pval
 
-def test_is_holliday_junction():
+def test_is_holliday_junction(sw_palindrome):
     score_cutoff = 4
     dist_sum_cutoff = 4 # HARD CODED
-    sw = SW_HOLLIDAY
+    sw = sw_palindrome
     seq1 = 'AACCGGTTACGTACGT'
     seq2 = 'TTTTACGTAACCGGTA'
     negative1, negative2 = False, False
@@ -262,8 +261,8 @@ def test_is_holliday_junction():
         dist_cutoff1=1, dist_cutoff2=9, dist_sum_cutoff=dist_sum_cutoff, score_cutoff=score_cutoff)
     assert aln.flag_holliday, aln.dump()
 
-def test_calc_pval_holliday_u1u2():
-    sw = SW_HOLLIDAY
+def test_calc_pval_holliday_u1u2(sw_holliday):
+    sw = sw_holliday
     seq1 = 'TTACGC'+'CAAGCGCGC'
     seq2 = 'GCACAG'+'CAAGCGCGC'
     negative1 = False # downstream ^ rc?
@@ -275,8 +274,8 @@ def test_calc_pval_holliday_u1u2():
                               dist_cutoff1=1, dist_cutoff2=3, n_iter=100, random_seed=42)
     assert pval == 0.0, pval
 
-def test_calc_pval_holliday_d1d2():
-    sw = SW_HOLLIDAY
+def test_calc_pval_holliday_d1d2(sw_holliday):
+    sw = sw_holliday
     seq1 = 'CAAGC'+'TTACGC'
     seq2 = 'CAAGC'+'GCACAG'
     negative1 = True # downstream ^ rc?
@@ -288,8 +287,8 @@ def test_calc_pval_holliday_d1d2():
                               dist_cutoff1=1, dist_cutoff2=3, n_iter=100, random_seed=42)
     assert pval == 0.02, pval
 
-def test_calc_pval_holliday_u1d2r():
-    sw = SW_HOLLIDAY
+def test_calc_pval_holliday_u1d2r(sw_holliday):
+    sw = sw_holliday
     seq1 = 'TTACGC'+'CAAG'
     seq2 = 'CAAG'+'GCACAG'
     negative1 = False # downstream ^ rc?
@@ -305,8 +304,8 @@ def test_calc_pval_holliday_u1d2r():
                               dist_cutoff1=1, dist_cutoff2=3, n_iter=100, random_seed=42)
     assert pval == 0.01, pval
 
-def test_calc_pval_holliday_d1u2r():
-    sw = SW_HOLLIDAY
+def test_calc_pval_holliday_d1u2r(sw_holliday):
+    sw = sw_holliday
     seq1 = 'CAAG'+'GCACAG'
     seq2 = 'TTACGC'+'CAAG'
     negative1 = True # downstream ^ rc?
@@ -339,9 +338,9 @@ def test_get_breakpoint_pair_seq_data():
     assert seqs['d2r'] == 'ATTTT', seqs['d2r']
 
 
-def test_get_best_holliday_junction_1(): 
+def test_get_best_holliday_junction_1(config, sw_holliday): 
     genome = pyfaidx.Fasta(config['reference']['2'])
-    sw = SW_HOLLIDAY
+    sw = sw_holliday
 
     chrom1, pos1, ori1 = 'PGBD5Vector', 1012, '+'
     chrom2, pos2, ori2 = 'PGBD5Vector', 1980, '+'
@@ -358,9 +357,9 @@ def test_get_best_holliday_junction_1():
     assert (start2, end2) == (6, 14), (start2, end2)
     assert alns['u1_u2'].seq2[start2:end2] == 'CAAGCG-GC'.replace('-', ''), alns['u1_u2'].seq1
 
-def test_get_best_holliday_junction_2(): 
+def test_get_best_holliday_junction_2(config, sw_holliday): 
     genome = pyfaidx.Fasta(config['reference']['2'])
-    sw = SW_HOLLIDAY
+    sw = sw_holliday
 
     chrom1, pos1, ori1 = 'PGBD5Vector', 1285, '-'
     chrom2, pos2, ori2 = 'PGBD5Vector', 3421, '-'
