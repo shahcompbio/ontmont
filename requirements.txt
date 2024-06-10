@@ -2,11 +2,13 @@ click
 matplotlib
 numpy
 pandas
+pydata-sphinx-theme
 pyfaidx
 pysam
 pytest
 PyYAML
 scipy
 setuptools
+sphinxcontrib-napoleon
 swalign
 tqdm

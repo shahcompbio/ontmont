@@ -107,20 +107,6 @@ def filter_breakpoints_at_contig_ends(brk_df):
 
 
 def filter_sv_with_breakpoint_at_contig_ends(df):
-    """
-    Filters structural variant (SV) records to exclude those with breakpoints too close to the ends of contigs.
-
-    This function calculates the distance of each SV breakpoint from the nearest end of its respective contig.
-    SVs with either breakpoint within 3 bases of a contig end are excluded from the results. The function uses
-    a predefined dictionary of contig lengths to determine the distances from the contig ends.
-
-    Parameters:
-    - df (pandas.DataFrame): A DataFrame containing SV records. Must include 'pos1' and 'chrom1' columns,
-      where 'pos1' is the position of the breakpoint and 'chrom1' is the name of the contig.
-
-    Returns:
-    - pandas.DataFrame: A filtered DataFrame excluding SVs with breakpoints within 3 bases of the contig ends.
-    """
     vector_lengths = { # GLOBAL - I don't want to waste time automating this...
         'GFPVector': 8725,
         'PiggyBacVector': 9794,
@@ -146,22 +132,6 @@ def filter_sv_with_breakpoint_at_contig_ends(df):
 
 
 def get_secondaries(read):
-    """
-    Extracts secondary alignment information from a read's tags.
-
-    This function parses the tags of a given read to find the 'SA' tag, which contains information about
-    secondary alignments. The 'SA' tag is expected to be a semicolon-separated string containing details
-    of each secondary alignment. These details are then split into a list, with each element representing
-    one secondary alignment.
-
-    Parameters:
-    - read (pysam.AlignedSegment): A single read object from a SAM/BAM file, as provided by pysam.
-
-    Returns:
-    - list: A list of strings, where each string contains the comma-separated details of a secondary
-      alignment as specified in the SAM format specification. Returns an empty list if no secondary
-      alignments are found.
-    """
     secondaries = [a[1].split(';') for a in read.tags if a[0] == 'SA']
     if len(secondaries) > 0:
         secondaries = secondaries[0]
@@ -171,17 +141,6 @@ def get_secondaries(read):
 
 
 def get_chromosomes_to_process(bam, drop_expression_vectors=False):
-    """
-    Identifies and returns a list of contigs from a BAM file that are specified in a predefined list and have at least one read aligned.
-
-    Parameters:
-    - bam (pysam.AlignmentFile): An object representing an opened BAM file for reading.
-
-    Returns:
-    - list: A list of contig names that are both present in the predefined list of vector contigs and have at least one read aligned in the BAM file.
-
-    This function filters for specific vector contigs, checking each for the presence of aligned reads before adding it to the list of contigs to process.
-    """
     vector_contigs = ['GFPVector', 'PiggyBacVector', 'PGBD5Vector', 
         'puro-GFP-PGBD5_seq', 'DelPBEF1NeoTransposon', 'PBEF1NeoTransposon']
     if drop_expression_vectors:
@@ -196,27 +155,6 @@ def get_chromosomes_to_process(bam, drop_expression_vectors=False):
 
 
 def extract_split_alignments(bam, chroms_proc):
-    """
-    Extracts and organizes split alignments from a BAM file for specified chromosomes.
-
-    This function iterates over each chromosome in `chroms_proc`, fetching reads from the BAM file. 
-    It focuses on reads that have secondary alignments (indicative of chimeric reads) and constructs 
-    a list of `SplitAlignment` objects representing the primary and secondary alignments. Each 
-    `SplitAlignment` contains the CIGAR string, query name, reference name, position (1-based), and strand 
-    of the alignment.
-
-    Parameters:
-    - bam (pysam.AlignmentFile): An open BAM file for reading alignments.
-    - chroms_proc (list of str): A list of chromosome names to process.
-
-    Returns:
-    - list of SplitAlignment: A list of `SplitAlignment` objects representing the extracted alignments.
-
-    Note:
-    - This function assumes the existence of a `SplitAlignment` class and a `get_secondaries` function 
-      that extracts secondary alignments from a read.
-    - Reads without secondary alignments are skipped.
-    """
     alignments = []
     for chrom in chroms_proc:
         for read in bam.fetch(chrom):
@@ -239,23 +177,6 @@ def extract_split_alignments(bam, chroms_proc):
     return alignments
 
 def make_split_read_table(alignments):
-    """
-    Creates a pandas DataFrame from a list of split read alignments.
-
-    This function takes a list of alignment objects and transforms it into a structured pandas DataFrame. 
-    Each row in the DataFrame represents a split read alignment with detailed information such as query name, 
-    chromosome, start and end positions, strand, clipping information, and match length. The DataFrame is 
-    sorted by query name and the position of the first clip, and duplicates are removed to ensure uniqueness 
-    of entries.
-
-    Parameters:
-    - alignments (list): A list of alignment objects, each containing attributes like read_name, refname, 
-      start, end, strand, clip1, clip2, match, and pclip1.
-
-    Returns:
-    - pandas.DataFrame: A DataFrame with columns ['qname', 'chrom', 'start', 'end', 'strand', 'clip1', 
-      'match', 'clip2', 'pclip1'], sorted by 'qname' and 'pclip1', and without duplicates.
-    """
     sa_cols = ['qname', 'chrom', 'start', 'end', 'strand', 'clip1', 'match', 'clip2', 'pclip1']
     df = pd.DataFrame(columns=sa_cols)
     for alignment in alignments:
@@ -275,9 +196,6 @@ def make_split_read_table(alignments):
     return df.reset_index(drop=True)
 
 def is_breakpoints_not_sorted(chrom1, pos1, chrom2, pos2, chrom_order):
-    """
-    Check whether two breakpoints are ordered correctly or not
-    """
     if chrom_order.index(chrom1) > chrom_order.index(chrom2):
         return True
     if chrom_order.index(chrom1) == chrom_order.index(chrom2) and pos1 > pos2:

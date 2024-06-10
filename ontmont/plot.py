@@ -29,14 +29,6 @@ def get_edgecolor(svtype):
     return edgecolor_map[svtype]
 
 def is_overlap(interval1, interval2):
-    """ Return overlap status of two intervals: test the following:
-    interval1:   [   )
-    interval2: [       )
-    interval2:  [ )
-    interval2:    [ )
-    interval2:      [ )
-     - otherwise no overlap
-    """
     start1, end1 = interval1
     start2, end2 = interval2
     start1, end1, start2, end2 = float(start1), float(end1), float(start2), float(end2)
@@ -44,11 +36,6 @@ def is_overlap(interval1, interval2):
     return overlap
 
 def convert_tupleproxy_to_pyranges(exon):
-    """ Convert TabixFile 'exon' (TupleProxy) to pyranges-like fields
-    - exon: TupleProxy (result from iterating TabixFile
-    
-    Returns: pyranges-like fields [list]
-    """
     assert len(exon) == 9, f'exon (length:{len(exon)}): {tuple(exon)}'
     exon_field = exon[:8]
     info = exon[8].rstrip(';')
@@ -66,12 +53,6 @@ def convert_tupleproxy_to_pyranges(exon):
     return field
 
 def parse_gtf_region(gtf, region):
-    """ Convert pysam TabixFile fetch results to quasi-pyranges DataFrame
-    - gtf: pysam.TabixFile
-    - region: tuple of (chromosome[str], start[int], end[int])
-    
-    Returns: pd.DataFrame
-    """
     pyranges_cols = [
         'Chromosome', 'Source', 'Feature', 'Start', 'End', 'Score', 'Strand',
         'Frame', 'gene_id', 'gene_version', 'gene_name', 'gene_source',
@@ -89,12 +70,6 @@ def parse_gtf_region(gtf, region):
     return df
 
 def get_gene_repr_exons(gtf, gene, lenient=False):
-    """ Get representative exons from given gene name
-    - gtf: pyranges-like DataFrame from parsing GTF
-    - gene: gene symbol
-
-    Returns: DataFrame of exons of the representative isoform of the give gene
-    """
     transcript = get_repr_transcript_id(gtf, gene, lenient=lenient)
     exons = get_transcript_exons(gtf, transcript)
     return exons
@@ -107,12 +82,6 @@ def get_transcript_exons(gtf, transcript_id):
     return exons
 
 def get_repr_transcript_id(gtf, gene_name, lenient=False):
-    """ Select the representative transcript isoform of a gene symbol
-    - gtf: pyranges-like DataFrame from parsing GTF
-    - gene: gene symbol
-
-    Returns: transcript_id[str]
-    """
     if not lenient:
         transcripts = (
             gtf
@@ -165,17 +134,6 @@ def _get_gene_offsets(intervals):
     return gene2offset
 
 def add_gene_annotations(ax, gtf, chromosome, start, end, genes=None, already_plotted=set(), gene_font_size=8):
-    """ Plot UCSC-like gene annotation to Axes
-    - ax: pyplot.Axes
-    - gtf [pysam.TabixFile]: input object after opening tabixed gtf.gz
-    - chromosome [str]
-    - start [int]
-    - end [int]
-    - genes (optional): list of genes in chromosome:start-end to plot
-    - return_offset (optional): return gene -> offset map [dict]
-
-    Returns: gene2offset[dict] (optional)
-    """
     chromosome = chromosome.replace('chr', '')
     # ax.set_xlim((start, end))
     # ax.spines[['top', 'bottom', 'right', 'left']].set_visible(False)

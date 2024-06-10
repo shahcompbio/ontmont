@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>ontmont &#8212; ontmont 0.0.4 documentation</title>
   
@@ -15,35 +14,34 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=8c5712d9"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'modules';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ontmont package" href="ontmont.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -53,27 +51,23 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -95,12 +89,17 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
@@ -130,6 +129,19 @@
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="ontmont.html">
+    ontmont package
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    ontmont
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -185,9 +197,9 @@ document.write(`
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -199,9 +211,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -210,12 +220,28 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
+          
+          
+            <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="ontmont.html">
+    ontmont package
+  </a>
+</li>
+
+
+<li class="nav-item pst-header-nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    ontmont
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -239,6 +265,18 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ontmont.html">ontmont package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -248,13 +286,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -263,7 +301,7 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -289,19 +327,139 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="ontmont">
-<h1>ontmont<a class="headerlink" href="#ontmont" title="Permalink to this heading">#</a></h1>
+<h1>ontmont<a class="headerlink" href="#ontmont" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ontmont.html">ontmont package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ontmont.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.bundle">ontmont.bundle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.bundle">ontmont.bundle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.bundle.make_brk_supports"><code class="docutils literal notranslate"><span class="pre">make_brk_supports()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.bundle.make_brk_table"><code class="docutils literal notranslate"><span class="pre">make_brk_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.bundle.make_brks_bundle"><code class="docutils literal notranslate"><span class="pre">make_brks_bundle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.bundle.make_seg_table"><code class="docutils literal notranslate"><span class="pre">make_seg_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.bundle.make_tra_table"><code class="docutils literal notranslate"><span class="pre">make_tra_table()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.cli">ontmont.cli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.collect">ontmont.collect module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.datatypes">ontmont.datatypes module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.irs">ontmont.irs module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.plot">ontmont.plot module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.process">ontmont.process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.utils">ontmont.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.collect">ontmont.collect module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.extract_split_alignments"><code class="docutils literal notranslate"><span class="pre">extract_split_alignments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.find_presence_of_matching_sv"><code class="docutils literal notranslate"><span class="pre">find_presence_of_matching_sv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.fix_lower_support_coordinates"><code class="docutils literal notranslate"><span class="pre">fix_lower_support_coordinates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.get_breakpoint_support_from_bundle"><code class="docutils literal notranslate"><span class="pre">get_breakpoint_support_from_bundle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.get_normalized_sv"><code class="docutils literal notranslate"><span class="pre">get_normalized_sv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.get_svtype"><code class="docutils literal notranslate"><span class="pre">get_svtype()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.make_brks_bundle"><code class="docutils literal notranslate"><span class="pre">make_brks_bundle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.make_tumor_sv_table"><code class="docutils literal notranslate"><span class="pre">make_tumor_sv_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.map_similar_coordinate_to_higher_rank"><code class="docutils literal notranslate"><span class="pre">map_similar_coordinate_to_higher_rank()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.normalize_sv_table"><code class="docutils literal notranslate"><span class="pre">normalize_sv_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.pull_breakpoints_from_bam_files"><code class="docutils literal notranslate"><span class="pre">pull_breakpoints_from_bam_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.pull_breakpoints_from_reads_in_sv_regions"><code class="docutils literal notranslate"><span class="pre">pull_breakpoints_from_reads_in_sv_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.collect.pull_sv_supporting_reads_from_bundle"><code class="docutils literal notranslate"><span class="pre">pull_sv_supporting_reads_from_bundle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.datatypes">ontmont.datatypes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Breakpoint"><code class="docutils literal notranslate"><span class="pre">Breakpoint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Breakpoint.chroms"><code class="docutils literal notranslate"><span class="pre">Breakpoint.chroms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Breakpoint.get_breakpoint_seqs"><code class="docutils literal notranslate"><span class="pre">Breakpoint.get_breakpoint_seqs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.BreakpointChain"><code class="docutils literal notranslate"><span class="pre">BreakpointChain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.BreakpointChain.get_segments"><code class="docutils literal notranslate"><span class="pre">BreakpointChain.get_segments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.BreakpointChain.get_transitions"><code class="docutils literal notranslate"><span class="pre">BreakpointChain.get_transitions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.BreakpointPair"><code class="docutils literal notranslate"><span class="pre">BreakpointPair</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Sample"><code class="docutils literal notranslate"><span class="pre">Sample</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Sample.long_samples"><code class="docutils literal notranslate"><span class="pre">Sample.long_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Sample.sample2group"><code class="docutils literal notranslate"><span class="pre">Sample.sample2group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Sample.sample2short"><code class="docutils literal notranslate"><span class="pre">Sample.sample2short</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Segments"><code class="docutils literal notranslate"><span class="pre">Segments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Segments.get_list"><code class="docutils literal notranslate"><span class="pre">Segments.get_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.SplitAlignment"><code class="docutils literal notranslate"><span class="pre">SplitAlignment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.SplitAlignment.extract_cigar_field"><code class="docutils literal notranslate"><span class="pre">SplitAlignment.extract_cigar_field()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.SplitAlignment.get_cigar_tuples"><code class="docutils literal notranslate"><span class="pre">SplitAlignment.get_cigar_tuples()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Transitions"><code class="docutils literal notranslate"><span class="pre">Transitions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ontmont.html#ontmont.datatypes.Transitions.get_list"><code class="docutils literal notranslate"><span class="pre">Transitions.get_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.datatypes.get_breakpoint_seqs"><code class="docutils literal notranslate"><span class="pre">get_breakpoint_seqs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.irs">ontmont.irs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.align_two_sequences"><code class="docutils literal notranslate"><span class="pre">align_two_sequences()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.calc_distance_score"><code class="docutils literal notranslate"><span class="pre">calc_distance_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.calc_pval_bilateral_ir"><code class="docutils literal notranslate"><span class="pre">calc_pval_bilateral_ir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.calc_pval_holliday"><code class="docutils literal notranslate"><span class="pre">calc_pval_holliday()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.calc_pval_onesided_ir"><code class="docutils literal notranslate"><span class="pre">calc_pval_onesided_ir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.calc_pval_segmental_ir"><code class="docutils literal notranslate"><span class="pre">calc_pval_segmental_ir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_best_holliday_junctions"><code class="docutils literal notranslate"><span class="pre">get_best_holliday_junctions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_best_ir_within_breakpoints"><code class="docutils literal notranslate"><span class="pre">get_best_ir_within_breakpoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_best_ir_within_segment"><code class="docutils literal notranslate"><span class="pre">get_best_ir_within_segment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_best_onesided_ir"><code class="docutils literal notranslate"><span class="pre">get_best_onesided_ir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_breakpoint_pair_seq_data"><code class="docutils literal notranslate"><span class="pre">get_breakpoint_pair_seq_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.get_onesided_ir"><code class="docutils literal notranslate"><span class="pre">get_onesided_ir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.is_holliday_junction"><code class="docutils literal notranslate"><span class="pre">is_holliday_junction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.irs.overlaps"><code class="docutils literal notranslate"><span class="pre">overlaps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.plot">ontmont.plot module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.add_gene_annotations"><code class="docutils literal notranslate"><span class="pre">add_gene_annotations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.add_sv_legend_to_axes"><code class="docutils literal notranslate"><span class="pre">add_sv_legend_to_axes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.convert_tupleproxy_to_pyranges"><code class="docutils literal notranslate"><span class="pre">convert_tupleproxy_to_pyranges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.extract_vaf_from_annotated_sv_table"><code class="docutils literal notranslate"><span class="pre">extract_vaf_from_annotated_sv_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.fix_coordinate_xticklabels"><code class="docutils literal notranslate"><span class="pre">fix_coordinate_xticklabels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.fix_yticks_with_integers"><code class="docutils literal notranslate"><span class="pre">fix_yticks_with_integers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_chrom_xlims"><code class="docutils literal notranslate"><span class="pre">get_chrom_xlims()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_chromosomes_from_bundle"><code class="docutils literal notranslate"><span class="pre">get_chromosomes_from_bundle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_cn_blocks_for_read_xlim"><code class="docutils literal notranslate"><span class="pre">get_cn_blocks_for_read_xlim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_edgecolor"><code class="docutils literal notranslate"><span class="pre">get_edgecolor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_gene_repr_exons"><code class="docutils literal notranslate"><span class="pre">get_gene_repr_exons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_repr_transcript_id"><code class="docutils literal notranslate"><span class="pre">get_repr_transcript_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_sv_table_chroms"><code class="docutils literal notranslate"><span class="pre">get_sv_table_chroms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_transcript_exons"><code class="docutils literal notranslate"><span class="pre">get_transcript_exons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.get_unique_sv_with_support"><code class="docutils literal notranslate"><span class="pre">get_unique_sv_with_support()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.is_overlap"><code class="docutils literal notranslate"><span class="pre">is_overlap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.make_axes_for_breakpoints"><code class="docutils literal notranslate"><span class="pre">make_axes_for_breakpoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.make_spline_coordinates"><code class="docutils literal notranslate"><span class="pre">make_spline_coordinates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.parse_gtf_region"><code class="docutils literal notranslate"><span class="pre">parse_gtf_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_cn_on_axes"><code class="docutils literal notranslate"><span class="pre">plot_cn_on_axes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_gene_annotations"><code class="docutils literal notranslate"><span class="pre">plot_gene_annotations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_jabba_cn"><code class="docutils literal notranslate"><span class="pre">plot_jabba_cn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_quasijabba"><code class="docutils literal notranslate"><span class="pre">plot_quasijabba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_segments_on_axes"><code class="docutils literal notranslate"><span class="pre">plot_segments_on_axes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_sv_lines_on_cn"><code class="docutils literal notranslate"><span class="pre">plot_sv_lines_on_cn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_svs_to_cn_segments"><code class="docutils literal notranslate"><span class="pre">plot_svs_to_cn_segments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_transition_on_axes"><code class="docutils literal notranslate"><span class="pre">plot_transition_on_axes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_vaf_cn_sv_for_reads"><code class="docutils literal notranslate"><span class="pre">plot_vaf_cn_sv_for_reads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.plot.plot_vaf_on_axes"><code class="docutils literal notranslate"><span class="pre">plot_vaf_on_axes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.process">ontmont.process module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.process.filter_sv_by_clone"><code class="docutils literal notranslate"><span class="pre">filter_sv_by_clone()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.process.merge_cn_segments"><code class="docutils literal notranslate"><span class="pre">merge_cn_segments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.process.update_blocks_and_reset_prev"><code class="docutils literal notranslate"><span class="pre">update_blocks_and_reset_prev()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont.utils">ontmont.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.enumerate_breakpoints"><code class="docutils literal notranslate"><span class="pre">enumerate_breakpoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.extract_split_alignments"><code class="docutils literal notranslate"><span class="pre">extract_split_alignments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.filter_breakpoints_at_contig_ends"><code class="docutils literal notranslate"><span class="pre">filter_breakpoints_at_contig_ends()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.filter_sv_with_breakpoint_at_contig_ends"><code class="docutils literal notranslate"><span class="pre">filter_sv_with_breakpoint_at_contig_ends()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.get_chromosomes_to_process"><code class="docutils literal notranslate"><span class="pre">get_chromosomes_to_process()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.get_secondaries"><code class="docutils literal notranslate"><span class="pre">get_secondaries()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.is_breakpoints_not_sorted"><code class="docutils literal notranslate"><span class="pre">is_breakpoints_not_sorted()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.make_split_read_table"><code class="docutils literal notranslate"><span class="pre">make_split_read_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.remove_duplicates_from_tra_table"><code class="docutils literal notranslate"><span class="pre">remove_duplicates_from_tra_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.reverse_complement"><code class="docutils literal notranslate"><span class="pre">reverse_complement()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ontmont.html#ontmont.utils.shuffle_seq"><code class="docutils literal notranslate"><span class="pre">shuffle_seq()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="ontmont.html#module-ontmont">Module contents</a></li>
 </ul>
 </li>
@@ -316,9 +474,18 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="ontmont.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ontmont package</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -351,8 +518,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -372,7 +539,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
@@ -385,7 +552,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
 </p></div>
       
     </div>
