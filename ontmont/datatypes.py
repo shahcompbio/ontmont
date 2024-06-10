@@ -4,26 +4,7 @@ import numpy as np
 
 
 class SplitAlignment:
-    """
-    Represents a split alignment of a sequencing read, encapsulating details about the alignment's location,
-    orientation, and structure as described by its CIGAR string.
-
-    This class is designed to parse and store information about a single alignment segment of a read, which
-    can be part of a primary alignment or a secondary (chimeric) alignment. It includes methods to interpret
-    the CIGAR string for further analysis of the alignment's properties, such as calculating the aligned
-    length and identifying specific alignment features.
-    """
     def __init__(self, cigarstring, read_name, refname, read_pos, strand):
-        """
-        Attributes:
-        - cigarstring (str): The CIGAR string representing the alignment's match, insertion, deletion, 
-            skipping, soft clipping, hard clipping, padding, sequence match, and sequence mismatch operations.
-        - read_name (str): The name (query name) of the read.
-        - refname (str): The name of the reference chromosome to which the read is aligned.
-        - read_pos (int): The starting position of the alignment on the reference chromosome (0-based).
-        - strand (str): The strand of the alignment, represented as '+' for the forward strand and '-' for
-            the reverse strand.
-        """
         self.read_name = read_name
         self.refname = refname
         self.cigarstring = cigarstring

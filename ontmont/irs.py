@@ -12,9 +12,6 @@ def calc_distance_score(dist1, dist2, dist_cutoff1, dist_cutoff2):
     return dist_score
 
 def align_two_sequences(seq1, seq2, sw, rc=True):
-    """
-    Given a breakpoint, align seq1 to seq2 [reverse complement by default]
-    """
     len1, len2 = len(seq1), len(seq2)
     seq2_rc = reverse_complement(seq2)
     if rc:
@@ -106,9 +103,6 @@ def get_best_onesided_ir(seq, direction, sw, dist_cutoff=1, margins=[15, 30, 60]
     return best_aln
         
 def get_onesided_ir(seq, sw):
-    """
-    Given one sequence, align seq to its seq_rc, finding inverted repeats
-    """
     length = len(seq)
     seq_rc = reverse_complement(seq)
     aln = sw.align(seq, seq_rc)
