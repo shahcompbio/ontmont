@@ -10,6 +10,7 @@ Welcome to ontmont's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   ontmont
 
 .. include:: ../README.md
    :parser: myst_parser.sphinx_
