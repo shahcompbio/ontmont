@@ -445,68 +445,267 @@ document.write(`
 <span id="ontmont-collect-module"></span><h2>ontmont.collect module<a class="headerlink" href="#module-ontmont.collect" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.extract_split_alignments">
-<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">extract_split_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.extract_split_alignments" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">extract_split_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_reads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.extract_split_alignments" title="Link to this definition">#</a></dt>
+<dd><p>Extract SplitAlignment objects from IteratorRow with a max_reads parameter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reads</strong> (<em>pysam.IteratorRow</em>) – Reads fetched from a pysam.Alignmentfile</p></li>
+<li><p><strong>max_reads</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of reads to extract at maximum. Defaults to 500.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of SplitAlignment objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.find_presence_of_matching_sv">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">find_presence_of_matching_sv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sv1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sv2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.find_presence_of_matching_sv" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Check overlap of sv2 for sv1 table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sv1</strong> (<em>pandas.DataFrame</em>) – SV table to label matching SVs</p></li>
+<li><p><strong>sv2</strong> (<em>pandas.DataFrame</em>) – SV table reference to check presence of overlap</p></li>
+<li><p><strong>margin</strong> (<em>int</em><em>, </em><em>optional</em>) – Margin (bp) of breakpoint coordinate difference. Defaults to 50.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>{True, False}</cite> list of matches. Length equal to sv1 row size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.fix_lower_support_coordinates">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">fix_lower_support_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coord_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.fix_lower_support_coordinates" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Map breakpoint of lower support to close-by breakpoint with higher support</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>complexes</strong> (<em>list</em>) – List of BreakpointChain</p></li>
+<li><p><strong>coord_map</strong> (<em>dict</em>) – Map of str(Breakpoint) coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of BreakpointChain, mapped to fixed coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.get_breakpoint_support_from_bundle">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">get_breakpoint_support_from_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.get_breakpoint_support_from_bundle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get breakpoint support count</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>complexes</strong> (<em>list</em>) – List of BreakpointChain</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Support for str(Breakpoint) coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>collections.Counter</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.get_normalized_sv">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">get_normalized_sv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.get_normalized_sv" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sort (normalize) a BreakpointPair</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tra</strong> (<a class="reference internal" href="#ontmont.datatypes.BreakpointPair" title="ontmont.datatypes.BreakpointPair"><em>BreakpointPair</em></a>) – Pair of breakpoints</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sorted breakpoint coordinates, flattened</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.get_svtype">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">get_svtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ontmont.datatypes.BreakpointPair" title="ontmont.datatypes.BreakpointPair"><span class="pre">BreakpointPair</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.get_svtype" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get SV type string for a given BreakpointPair</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tra</strong> (<a class="reference internal" href="#ontmont.datatypes.BreakpointPair" title="ontmont.datatypes.BreakpointPair"><em>BreakpointPair</em></a>) – Paired breakpoint object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If no SV type has been assigned</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SV type string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.make_brks_bundle">
-<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">make_brks_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.make_brks_bundle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">make_brks_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reads_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.make_brks_bundle" title="Link to this definition">#</a></dt>
+<dd><p>Make a list of BreapointChain based on alignment table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reads_df</strong> (<em>pandas.DataFrame</em>) – Table of read alignment statistics</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of BreakpointChain</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.make_tumor_sv_table">
-<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">make_tumor_sv_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_support</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.make_tumor_sv_table" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">make_tumor_sv_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_support</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.make_tumor_sv_table" title="Link to this definition">#</a></dt>
+<dd><p>Make SV table from list of BreakpointChain</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>complexes</strong> (<em>list</em>) – List of BreakpointChain</p></li>
+<li><p><strong>sv</strong> (<em>pandas.DataFrame</em><em>, </em><em>optional</em>) – Table of source SVs as reference for <cite>in_source</cite> flag. Defaults to None</p></li>
+<li><p><strong>margin</strong> (<em>int</em><em>, </em><em>optional</em>) – Margin (bp) for merging clustered breakpoints. Defaults to 10.</p></li>
+<li><p><strong>get_support</strong> (<em>bool</em><em>, </em><em>optional</em>) – Merge breakpoints with same coordinates and add count as <cite>support</cite>. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.map_similar_coordinate_to_higher_rank">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">map_similar_coordinate_to_higher_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breakpoint_support</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.map_similar_coordinate_to_higher_rank" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Make mapping of close-by coordinates, with breakpoints of higher support taking priority</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>complexes</strong> (<em>list</em>) – List of BreakpointChain</p></li>
+<li><p><strong>breakpoint_support</strong> (<em>dict</em><em> | </em><em>collections.Counter</em>) – Support for breakpoint coordinates</p></li>
+<li><p><strong>margin</strong> (<em>int</em><em>, </em><em>optional</em>) – Margin (bp) to merge close-by coordinates. Defaults to 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<cite>coord_map</cite>: src -&gt; dst coordinate, <cite>coord_map_log</cite> -&gt; (max_coord, src_count, max_count))</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.normalize_sv_table">
-<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">normalize_sv_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chrom1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'chromosome_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chrom2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'chromosome_2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'position_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'position_2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strand_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strand_2'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.normalize_sv_table" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">normalize_sv_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chrom1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'chromosome_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chrom2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'chromosome_2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'position_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'position_2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori1_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strand_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ori2_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strand_2'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.normalize_sv_table" title="Link to this definition">#</a></dt>
+<dd><p>Sort breakpoint1 and breakpoint2 of a SV table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sv</strong> (<em>pandas.DataFrame</em>) – Table of SVs</p></li>
+<li><p><strong>chrom1_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘chromosome_1’.</p></li>
+<li><p><strong>chrom2_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘chromosome_2’.</p></li>
+<li><p><strong>pos1_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘position_1’.</p></li>
+<li><p><strong>pos2_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘position_2’.</p></li>
+<li><p><strong>ori1_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘strand_1’.</p></li>
+<li><p><strong>ori2_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Defaults to ‘strand_2’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sorted (normalized) SV table</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.pull_breakpoints_from_bam_files">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">pull_breakpoints_from_bam_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bam_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_read_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.pull_breakpoints_from_bam_files" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get BreakpointChain list from BAM file according to an input SV table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bam_paths</strong> (<em>pysam.AlignmentFile</em>) – BAM file</p></li>
+<li><p><strong>sv</strong> (<em>pandas.DataFrame</em>) – SV table</p></li>
+<li><p><strong>get_read_table</strong> (<em>bool</em><em>, </em><em>optional</em>) – Return read table as well. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of BreakpointChain [, table of read alignment stats]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list [, pandas.DataFrame]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.pull_breakpoints_from_reads_in_sv_regions">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">pull_breakpoints_from_reads_in_sv_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_read_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_n_breakpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.pull_breakpoints_from_reads_in_sv_regions" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Extract and append BreakpointChain objects from a bam file and a table of SVs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bam</strong> (<em>pysam.AlignmentFile</em>) – BAM file</p></li>
+<li><p><strong>tra</strong> (<em>pandas.DataFrame</em>) – Table of SVs</p></li>
+<li><p><strong>get_read_table</strong> (<em>bool</em><em>, </em><em>optional</em>) – Return table of read alignment stats. Defaults to False.</p></li>
+<li><p><strong>min_n_breakpoint</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum number of breakpoints required to be saved. Useful in selecting complex rearrangements if the number is high. Defaults to 3.</p></li>
+<li><p><strong>margin</strong> (<em>int</em><em>, </em><em>optional</em>) – Margin (bp) from breakpoints to fetch reads. Defaults to 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of BreakpointChain</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ontmont.collect.pull_sv_supporting_reads_from_bundle">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">pull_sv_supporting_reads_from_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.pull_sv_supporting_reads_from_bundle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Filter bundle to include BreakpointChain objects that have breakpoints matching that of the input <cite>sv</cite> table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sv</strong> (<em>pandas.DataFrame</em>) – SV table</p></li>
+<li><p><strong>bundle</strong> (<em>list</em>) – list of BreapointChain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Filtered list of BreakpointChain</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-ontmont.datatypes">
