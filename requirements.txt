@@ -2,6 +2,7 @@ click
 matplotlib
 numpy
 pandas
+pydata-sphinx-theme
 pyfaidx
 pysam
 pytest
