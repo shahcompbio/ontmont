@@ -3,7 +3,6 @@ from operator import xor
 
 import pandas as pd
 
-from .datatypes import SplitAlignment
 from .utils import reverse_complement, shuffle_seq
 
 
