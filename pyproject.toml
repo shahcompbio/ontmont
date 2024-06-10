@@ -1,6 +1,6 @@
 [project]
 name = "ontmont"
-version = "0.0.3"
+version = "0.0.3b"
 #dynamic = ["version"]
 authors = [
     { name="Seongmin Choi", email="soymintc@gmail.com" },
@@ -30,3 +30,6 @@ dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 dev = ["pytest"]
+
+[project.scripts]
+test-cli = "src.ontmont.scripts.merge_cn_segments:main"

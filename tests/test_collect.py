@@ -1,6 +1,5 @@
 import pytest
 import pandas as pd
-from collections import Counter
 
 from ontmont.datatypes import Breakpoint, BreakpointPair, BreakpointChain
 

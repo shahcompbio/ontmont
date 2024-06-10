@@ -2,7 +2,6 @@ import yaml
 import swalign
 import pyfaidx 
 import pytest
-import pandas as pd
 
 from ontmont.datatypes import (Breakpoint, BreakpointPair)
 from ontmont.utils import reverse_complement

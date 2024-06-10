@@ -1,7 +1,3 @@
-import pytest
-
-import yaml
-import pyfaidx
 import pandas as pd
 import numpy as np
 
