@@ -7,10 +7,19 @@ import pysam
 from .utils import get_secondaries, make_split_read_table, enumerate_breakpoints
 from .datatypes import SplitAlignment, Breakpoint, BreakpointPair
 
-def extract_split_alignments(reads, max_depth=500):
+def extract_split_alignments(reads, max_reads=500):
+    """Extract SplitAlignment objects from IteratorRow with a max_reads parameter
+
+    Args:
+        reads (pysam.IteratorRow): Reads fetched from a pysam.Alignmentfile
+        max_reads (int, optional): Number of reads to extract at maximum. Defaults to 500.
+
+    Returns:
+        list: list of SplitAlignment objects
+    """
     alignments = []
     for i, read in enumerate(reads):
-        if i >= max_depth:
+        if i >= max_reads:
             break
         secondary_list = get_secondaries(read)
         if len(secondary_list) < 1: # only consider reads with secondaries (chimeric reads)
@@ -31,6 +40,18 @@ def extract_split_alignments(reads, max_depth=500):
     return alignments
 
 def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, min_n_breakpoint=3, margin=10):
+    """Extract and append BreakpointChain objects from a bam file and a table of SVs
+
+    Args:
+        bam (pysam.AlignmentFile): BAM file
+        tra (pandas.DataFrame): Table of SVs
+        get_read_table (bool, optional): Return table of read alignment stats. Defaults to False.
+        min_n_breakpoint (int, optional): Minimum number of breakpoints required to be saved. Useful in selecting complex rearrangements if the number is high. Defaults to 3.
+        margin (int, optional): Margin (bp) from breakpoints to fetch reads. Defaults to 10.
+
+    Returns:
+        list: List of BreakpointChain
+    """
     complexes = []
     saved_qnames = set()
     canonical_chroms = [str(c) for c in range(1, 22+1)] + ['X', 'Y']
@@ -60,9 +81,17 @@ def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, mi
         return complexes, read_info
     return complexes
 
-def make_brks_bundle(df):    
+def make_brks_bundle(reads_df):
+    """Make a list of BreapointChain based on alignment table
+
+    Args:
+        reads_df (pandas.DataFrame): Table of read alignment statistics
+
+    Returns:
+        list: List of BreakpointChain
+    """
     bundle = []
-    for qname, qdf in df.groupby('qname'):
+    for qname, qdf in reads_df.groupby('qname'):
         brks = enumerate_breakpoints(qdf)
         brks.qname = qname
         brks.info = {'sv':brks.tras, 'qname':brks.qname}
@@ -71,14 +100,31 @@ def make_brks_bundle(df):
     return bundle
 
 def get_breakpoint_support_from_bundle(complexes):
+    """Get breakpoint support count
+
+    Args:
+        complexes (list): List of BreakpointChain
+
+    Returns:
+        collections.Counter: Support for str(Breakpoint) coordinates
+    """
     breakpoint_support = Counter()
     for brks in complexes:
         for brk in brks:
-            chrom, pos, ori = brk.chrom, brk.pos, brk.ori
             breakpoint_support[str(brk)] += 1
     return breakpoint_support
 
 def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=10):
+    """Make mapping of close-by coordinates, with breakpoints of higher support taking priority
+
+    Args:
+        complexes (list): List of BreakpointChain
+        breakpoint_support (dict | collections.Counter): Support for breakpoint coordinates
+        margin (int, optional): Margin (bp) to merge close-by coordinates. Defaults to 10.
+
+    Returns:
+        tuple: (`coord_map`: src -> dst coordinate, `coord_map_log` -> (max_coord, src_count, max_count))
+    """
     coord_map = {}
     coord_map_log = {}
     for cix, brks in enumerate(complexes):
@@ -100,6 +146,15 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
     return coord_map, coord_map_log
 
 def fix_lower_support_coordinates(complexes, coord_map):
+    """Map breakpoint of lower support to close-by breakpoint with higher support
+
+    Args:
+        complexes (list): List of BreakpointChain
+        coord_map (dict): Map of str(Breakpoint) coordinates
+
+    Returns:
+        list: List of BreakpointChain, mapped to fixed coordinates
+    """
     for cix, brks in enumerate(complexes):
         for bix, brk in enumerate(brks):
             src_coord = str(brk)
@@ -109,24 +164,49 @@ def fix_lower_support_coordinates(complexes, coord_map):
             complexes[cix][bix].pos = dst_pos
     return complexes
 
-def normalize_sv_table(df, chrom1_col='chromosome_1', chrom2_col='chromosome_2', 
+def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2', 
                       pos1_col='position_1', pos2_col='position_2', 
                       ori1_col='strand_1', ori2_col='strand_2'):
-    df = df.copy()
+    """Sort breakpoint1 and breakpoint2 of a SV table
+
+    Args:
+        sv (pandas.DataFrame): Table of SVs
+        chrom1_col (str, optional): Defaults to 'chromosome_1'.
+        chrom2_col (str, optional): Defaults to 'chromosome_2'.
+        pos1_col (str, optional): Defaults to 'position_1'.
+        pos2_col (str, optional): Defaults to 'position_2'.
+        ori1_col (str, optional): Defaults to 'strand_1'.
+        ori2_col (str, optional): Defaults to 'strand_2'.
+
+    Returns:
+        pandas.DataFrame: Sorted (normalized) SV table
+    """
+    sv = sv.copy()
     chroms = [str(c) for c in range(1, 22+1)]+['X', 'Y']
     chroms += ['chr'+c for c in chroms] # chr prefices
     chrom_map = dict(zip(chroms, range(len(chroms))))
-    assert (~df[chrom1_col].isin(chroms)).sum() == 0, df[chrom1_col].unique()
-    assert (~df[chrom2_col].isin(chroms)).sum() == 0, df[chrom2_col].unique()
-    diff_chr = df[chrom1_col] != df[chrom2_col]
-    flag_inverse = (df[chrom1_col].map(chrom_map) > df[chrom2_col].map(chrom_map))
-    flag_inverse |= (df[chrom1_col]==df[chrom2_col]) & (df[pos1_col] > df[pos2_col])
-    df.loc[flag_inverse, [chrom1_col, chrom2_col]] = df.loc[flag_inverse, [chrom2_col, chrom1_col]].values
-    df.loc[flag_inverse, [pos1_col, pos2_col]] = df.loc[flag_inverse, [pos2_col, pos1_col]].values
-    df.loc[flag_inverse, [ori1_col, ori2_col]] = df.loc[flag_inverse, [ori2_col, ori1_col]].values
-    return df
+    assert (~sv[chrom1_col].isin(chroms)).sum() == 0, sv[chrom1_col].unique()
+    assert (~sv[chrom2_col].isin(chroms)).sum() == 0, sv[chrom2_col].unique()
+    diff_chr = sv[chrom1_col] != sv[chrom2_col]
+    flag_inverse = (sv[chrom1_col].map(chrom_map) > sv[chrom2_col].map(chrom_map))
+    flag_inverse |= (sv[chrom1_col]==sv[chrom2_col]) & (sv[pos1_col] > sv[pos2_col])
+    sv.loc[flag_inverse, [chrom1_col, chrom2_col]] = sv.loc[flag_inverse, [chrom2_col, chrom1_col]].values
+    sv.loc[flag_inverse, [pos1_col, pos2_col]] = sv.loc[flag_inverse, [pos2_col, pos1_col]].values
+    sv.loc[flag_inverse, [ori1_col, ori2_col]] = sv.loc[flag_inverse, [ori2_col, ori1_col]].values
+    return sv
 
 def get_svtype(tra:BreakpointPair):
+    """Get SV type string for a given BreakpointPair
+
+    Args:
+        tra (BreakpointPair): Paired breakpoint object
+
+    Raises:
+        ValueError: If no SV type has been assigned
+
+    Returns:
+        str: SV type string
+    """
     translocation = 'TRA'
     inversion = 'INV'
     duplication = 'DUP'
@@ -154,6 +234,15 @@ def get_svtype(tra:BreakpointPair):
     raise ValueError(f'tra:{tra}')
 
 def pull_sv_supporting_reads_from_bundle(sv, bundle):
+    """Filter bundle to include BreakpointChain objects that have breakpoints matching that of the input `sv` table
+
+    Args:
+        sv (pandas.DataFrame): SV table
+        bundle (list): list of BreapointChain
+
+    Returns:
+        list: Filtered list of BreakpointChain
+    """
     output_bundle = []
     sv_prop = {
         (sv['chromosome_1'], sv['position_1'], sv['strand_1']), 
@@ -177,6 +266,16 @@ def pull_sv_supporting_reads_from_bundle(sv, bundle):
     return output_bundle
 
 def find_presence_of_matching_sv(sv1, sv2, margin=50):
+    """Check overlap of sv2 for sv1 table
+
+    Args:
+        sv1 (pandas.DataFrame): SV table to label matching SVs
+        sv2 (pandas.DataFrame): SV table reference to check presence of overlap
+        margin (int, optional): Margin (bp) of breakpoint coordinate difference. Defaults to 50.
+
+    Returns:
+        pd.Series: `{True, False}` list of matches. Length equal to sv1 row size.
+    """
     match = []
     for i, (rix, row) in enumerate(sv2.iterrows()):
         _match = (
@@ -194,6 +293,16 @@ def find_presence_of_matching_sv(sv1, sv2, margin=50):
     return match
 
 def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
+    """Get BreakpointChain list from BAM file according to an input SV table
+
+    Args:
+        bam_paths (pysam.AlignmentFile): BAM file
+        sv (pandas.DataFrame): SV table
+        get_read_table (bool, optional): Return read table as well. Defaults to False.
+
+    Returns:
+        list [, pandas.DataFrame]: List of BreakpointChain [, table of read alignment stats]
+    """
     complexes = []
     read_tables = pd.DataFrame()
     for bam_path in bam_paths:
@@ -208,7 +317,18 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
         return complexes, read_tables
     return complexes
 
-def make_tumor_sv_table(complexes, sv, margin=10, get_support=True):
+def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
+    """Make SV table from list of BreakpointChain
+
+    Args:
+        complexes (list): List of BreakpointChain
+        sv (pandas.DataFrame, optional): Table of source SVs as reference for `in_source` flag. Defaults to None
+        margin (int, optional): Margin (bp) for merging clustered breakpoints. Defaults to 10.
+        get_support (bool, optional): Merge breakpoints with same coordinates and add count as `support`. Defaults to True.
+
+    Returns:
+        _type_: _description_
+    """
     breakpoint_support = get_breakpoint_support_from_bundle(complexes)
     coord_map, coord_map_log = map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=margin)
     complexes = fix_lower_support_coordinates(complexes, coord_map)
@@ -228,10 +348,19 @@ def make_tumor_sv_table(complexes, sv, margin=10, get_support=True):
     if get_support:
         tumor_sv = tumor_sv.groupby(ix_cols).value_counts().reset_index()
         tumor_sv.rename(columns={'count':'support'}, inplace=True)
-    tumor_sv['in_source'] = find_presence_of_matching_sv(tumor_sv, sv, margin=50)
+    if type(sv) == pd.DataFrame:
+        tumor_sv['in_source'] = find_presence_of_matching_sv(tumor_sv, sv, margin=50)
     return tumor_sv
 
 def get_normalized_sv(tra):
+    """Sort (normalize) a BreakpointPair
+
+    Args:
+        tra (BreakpointPair): Pair of breakpoints
+
+    Returns:
+        list: Sorted breakpoint coordinates, flattened
+    """
     chrom1, pos1, ori1 = tra.brk1.chrom, tra.brk1.pos, tra.brk1.ori
     chrom2, pos2, ori2 = tra.brk2.chrom, tra.brk2.pos, tra.brk2.ori
     if Breakpoint.chroms.index(chrom1) < Breakpoint.chroms.index(chrom1):
