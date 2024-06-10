@@ -6,8 +6,17 @@ from .utils import (remove_duplicates_from_tra_table,
 from .irs import (get_best_onesided_ir, get_best_ir_within_breakpoints, 
     get_best_holliday_junctions, get_best_ir_within_segment)
 
-def make_seg_table(bundle, seg_supports):
-    segment_score_cutoff = 5
+def make_seg_table(bundle, seg_supports, segment_score_cutoff=5):
+    """Create a dataframe based on a BreakpointChain bundle and supports dict
+
+    Args:
+        bundle (list): List of BreakpointChain variables
+        seg_supports (dict | pandas.Series): Number of support for each breakpoint coordinate
+        segment_score_cutoff (int, optional): Alignment score cutoff the IR found in the segment. Defaults to 5.
+
+    Returns:
+        pandas.DataFrame: table of segments coordinate with supports and IR statistics
+    """
     seg_cols = ['chrom', 'pos1', 'pos2', 'support']
     seg_cols += ['segment_score', 'segment_pvalue']
     seg_df = pd.DataFrame(columns=seg_cols)
@@ -54,7 +63,19 @@ def make_seg_table(bundle, seg_supports):
     return seg_df
 
 
-def make_brk_table(bundle, brk_supports):
+def make_brk_table(bundle, brk_supports,
+    unilateral_score_cutoff=5, bilateral_score_cutoff=8):
+    """Create a dataframe of breakpoints
+
+    Args:
+        bundle (list): List of BreakpointChain variables
+        brk_supports (dict | pandas.Series): Number of support for each breakpoint coordinate
+        unilateral_score_cutoff (int, optional): Alignment score cutoff for unilateral IR. Defaults to 5.
+        bilateral_score_cutoff (int, optional): Alignment score cutoff for bilateral IR. Defaults to 8.
+
+    Returns:
+        pandas.DataFrame: table of breakpoint coordinates with support and IR statistics
+    """
     vectors = [
         'DelPBEF1NeoTransposon',
         'GFPVector',
@@ -64,8 +85,6 @@ def make_brk_table(bundle, brk_supports):
         'puro-GFP-PGBD5_seq'
     ]
     chrom_order = ['chr'+str(c) for c in range(1, 22)] + ['chrX', 'chrY'] + vectors
-    unilateral_score_cutoff = 5
-    bilateral_score_cutoff = 8
     brk_cols = ['chrom', 'pos', 'ori', 'support']
     brk_cols += ['upstream_score', 'downstream_score', 'breakpoint_score']
     brk_cols += ['upstream_pvalue', 'downstream_pvalue', 'breakpoint_pvalue']
@@ -114,14 +133,27 @@ def make_brk_table(bundle, brk_supports):
     return brk_df
 
 
-def make_brks_bundle(df, genome, sw_palindrome, sw_holliday, margins=[15, 30, 60]):    
+def make_brks_bundle(reads_df, genome, sw_palindrome, sw_holliday, margins=[15, 30, 60]):
+    """Make a list of BreapointChain based on alignment table, genome, and alignment parameters
+
+    Args:
+        reads_df (pandas.DataFrame): Table of read alignment statistics
+        genome (pyfaidx.Fasta): Genome fasta
+        sw_palindrome (swalign.LocalAlignment): Parameters for detecting IR
+        sw_holliday (swalign.LocalAlignment): Parameters for detecting homology
+        margins (list, optional): Bases to slice from breakpoints. Defaults to [15, 30, 60].
+
+    Returns:
+        list: list of BreakpointChain
+    """
     bundle = []
-    for qname, qdf in df.groupby('qname'):
+    margin_max = max(margins)
+    for qname, qdf in reads_df.groupby('qname'):
         brks = enumerate_breakpoints(qdf)
         brks.get_transitions()
         brks.get_segments()
         for brk in brks:
-            brk.get_breakpoint_seqs(margin=60, genome=genome)
+            brk.get_breakpoint_seqs(margin=margin_max, genome=genome)
             seq1 = brk.upstream
             seq2 = brk.downstream
             direction1 = 'up'
@@ -140,6 +172,14 @@ def make_brks_bundle(df, genome, sw_palindrome, sw_holliday, margins=[15, 30, 60
 
 
 def make_brk_supports(bundle):
+    """Count supports for unique breakpoint coordinates
+
+    Args:
+        bundle (list): List of BreakpointChain
+
+    Returns:
+        pandas.Series: Count of unique breakpoints, taking chrom, pos, ori into account
+    """
     df = pd.DataFrame(columns=['chrom', 'pos', 'ori'])
     for brks in bundle:
         for brk in brks:
@@ -151,6 +191,15 @@ def make_brk_supports(bundle):
 
 
 def make_tra_table(bundle, tra_supports):
+    """Make a table of SVs based on bundle and number of supports
+
+    Args:
+        bundle (list): List of BreakpointChain
+        tra_supports (dict | pandas.Series): Support count for SVs
+
+    Returns:
+        pandas.DataFrame: Table of SVs, duplicate removed, removed if located on contig termini
+    """
     holliday_score_cutoff = 5
     key_pairs = ['u1_u2', 'd1_d2', 'u1_d2r', 'd1_u2r']
     tra_cols = ['chrom1', 'pos1', 'ori1', 'chrom2', 'pos2', 'ori2', 'support']
