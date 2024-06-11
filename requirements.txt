@@ -11,5 +11,6 @@ PyYAML
 scipy
 setuptools
 sphinxcontrib-napoleon
+sphinx-autodoc-typehints
 swalign
 tqdm

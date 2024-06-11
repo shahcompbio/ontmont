@@ -203,7 +203,7 @@ def get_svtype(tra:BreakpointPair):
     """Get SV type string for a given ``BreakpointPair``
 
     Args:
-        tra (``BreakpointPair``): Paired breakpoint object
+        tra (:class:``BreakpointPair``): Paired breakpoint object
 
     Raises:
         ValueError: If no SV type has been assigned
