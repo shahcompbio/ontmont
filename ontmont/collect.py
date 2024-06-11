@@ -123,7 +123,10 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
         margin (int, optional): Margin (bp) to merge close-by coordinates. Defaults to 10.
 
     Returns:
-        tuple: (`coord_map`: src -> dst coordinate, `coord_map_log` -> (max_coord, src_count, max_count))
+        (tuple): tuple containing:
+        
+            coord_map (dict): src -> dst coordinate
+            coord_map_log (tuple): (max_coord, src_count, max_count) [only for debugging]
     """
     coord_map = {}
     coord_map_log = {}
@@ -327,7 +330,7 @@ def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
         get_support (bool, optional): Merge breakpoints with same coordinates and add count as `support`. Defaults to True.
 
     Returns:
-        _type_: _description_
+        pandas.DataFrame: SV table from bundle [, with `in_source` labels] [, collapsed by coordinate with support counts]
     """
     breakpoint_support = get_breakpoint_support_from_bundle(complexes)
     coord_map, coord_map_log = map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=margin)

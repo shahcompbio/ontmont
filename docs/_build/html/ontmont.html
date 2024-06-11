@@ -554,7 +554,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>_type_</strong> – _description_</p>
+<dd class="field-even"><p><strong>pandas.DataFrame</strong> – SV table from bundle [, with <cite>in_source</cite> labels] [, collapsed by coordinate with support counts]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -563,7 +563,7 @@ document.write(`
 <dt class="sig sig-object py" id="ontmont.collect.map_similar_coordinate_to_higher_rank">
 <span class="sig-prename descclassname"><span class="pre">ontmont.collect.</span></span><span class="sig-name descname"><span class="pre">map_similar_coordinate_to_higher_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">complexes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">breakpoint_support</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ontmont.collect.map_similar_coordinate_to_higher_rank" title="Permalink to this definition">#</a></dt>
 <dd><p>Make mapping of close-by coordinates, with breakpoints of higher support taking priority</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>complexes</strong> (<em>list</em>) – List of BreakpointChain</p></li>
@@ -572,7 +572,9 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>tuple</strong> – (<cite>coord_map</cite>: src -&gt; dst coordinate, <cite>coord_map_log</cite> -&gt; (max_coord, src_count, max_count))</p>
+<dd class="field-even"><p><strong>(tuple)</strong> – tuple containing:</p>
+<p>coord_map (dict): src -&gt; dst coordinate
+coord_map_log (tuple): (max_coord, src_count, max_count) [only for debugging]</p>
 </dd>
 </dl>
 </dd></dl>
