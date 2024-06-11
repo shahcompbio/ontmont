@@ -200,10 +200,10 @@ def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2',
     return sv
 
 def get_svtype(tra:BreakpointPair):
-    """Get SV type string for a given ``BreakpointPair``
+    """Get SV type string for a given `BreakpointPair`
 
     Args:
-        tra (:class:`BreakpointPair`): Paired breakpoint object
+        tra (`BreakpointPair`): Paired breakpoint object
 
     Raises:
         ValueError: If no SV type has been assigned
