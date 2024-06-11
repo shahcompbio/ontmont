@@ -103,10 +103,10 @@ def get_breakpoint_support_from_bundle(complexes):
     """Get breakpoint support count
 
     Args:
-        complexes (list): List of BreakpointChain
+        complexes (list): List of :class:`BreakpointChain`
 
     Returns:
-        collections.Counter: Support for str(Breakpoint) coordinates
+        collections.Counter: Support for str(:class:`Breakpoint`) coordinates
     """
     breakpoint_support = Counter()
     for brks in complexes:
@@ -125,9 +125,9 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
     Returns:
         tuple: tuple containing:
         
-            coord_map (``dict``): src -> dst coordinate
+            coord_map (dict): src -> dst coordinate
 
-            coord_map_log (`tuple`): (max_coord, src_count, max_count) [only for debugging]
+            coord_map_log (tuple): (max_coord, src_count, max_count) [only for debugging]
     """
     coord_map = {}
     coord_map_log = {}
