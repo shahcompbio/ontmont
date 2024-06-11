@@ -15,7 +15,7 @@ def extract_split_alignments(reads, max_reads=500):
         max_reads (int, optional): Number of reads to extract at maximum. Defaults to 500.
 
     Returns:
-        list: list of SplitAlignment objects
+        list: list of ``SplitAlignment`` objects
     """
     alignments = []
     for i, read in enumerate(reads):
@@ -40,7 +40,7 @@ def extract_split_alignments(reads, max_reads=500):
     return alignments
 
 def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, min_n_breakpoint=3, margin=10):
-    """Extract and append BreakpointChain objects from a bam file and a table of SVs
+    """Extract and append ``BreakpointChain`` objects from a bam file and a table of SVs
 
     Args:
         bam (pysam.AlignmentFile): BAM file
@@ -50,7 +50,7 @@ def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, mi
         margin (int, optional): Margin (bp) from breakpoints to fetch reads. Defaults to 10.
 
     Returns:
-        list: List of BreakpointChain
+        list: List of ``BreakpointChain``
     """
     complexes = []
     saved_qnames = set()
@@ -82,13 +82,13 @@ def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, mi
     return complexes
 
 def make_brks_bundle(reads_df):
-    """Make a list of BreapointChain based on alignment table
+    """Make a list of ``BreapointChain`` based on alignment table
 
     Args:
         reads_df (pandas.DataFrame): Table of read alignment statistics
 
     Returns:
-        list: List of BreakpointChain
+        list: List of ``BreakpointChain``
     """
     bundle = []
     for qname, qdf in reads_df.groupby('qname'):
@@ -103,10 +103,10 @@ def get_breakpoint_support_from_bundle(complexes):
     """Get breakpoint support count
 
     Args:
-        complexes (list): List of :class:`BreakpointChain`
+        complexes (list): List of ``BreakpointChain``
 
     Returns:
-        collections.Counter: Support for str(:class:`Breakpoint`) coordinates
+        collections.Counter: Support for str(``Breakpoint``) coordinates
     """
     breakpoint_support = Counter()
     for brks in complexes:
@@ -118,7 +118,7 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
     """Make mapping of close-by coordinates, with breakpoints of higher support taking priority
 
     Args:
-        complexes (list): List of BreakpointChain
+        complexes (list): List of ``BreakpointChain``
         breakpoint_support (dict | collections.Counter): Support for breakpoint coordinates
         margin (int, optional): Margin (bp) to merge close-by coordinates. Defaults to 10.
 
@@ -153,11 +153,11 @@ def fix_lower_support_coordinates(complexes, coord_map):
     """Map breakpoint of lower support to close-by breakpoint with higher support
 
     Args:
-        complexes (list): List of BreakpointChain
-        coord_map (dict): Map of str(Breakpoint) coordinates
+        complexes (list): List of ``BreakpointChain``
+        coord_map (dict): Map of str(``Breakpoint``) coordinates
 
     Returns:
-        list: List of BreakpointChain, mapped to fixed coordinates
+        list: List of ``BreakpointChain``, mapped to fixed coordinates
     """
     for cix, brks in enumerate(complexes):
         for bix, brk in enumerate(brks):
@@ -200,10 +200,10 @@ def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2',
     return sv
 
 def get_svtype(tra:BreakpointPair):
-    """Get SV type string for a given BreakpointPair
+    """Get SV type string for a given ``BreakpointPair``
 
     Args:
-        tra (BreakpointPair): Paired breakpoint object
+        tra (``BreakpointPair``): Paired breakpoint object
 
     Raises:
         ValueError: If no SV type has been assigned
@@ -238,14 +238,14 @@ def get_svtype(tra:BreakpointPair):
     raise ValueError(f'tra:{tra}')
 
 def pull_sv_supporting_reads_from_bundle(sv, bundle):
-    """Filter bundle to include BreakpointChain objects that have breakpoints matching that of the input `sv` table
+    """Filter bundle to include ``BreakpointChain`` objects that have breakpoints matching that of the input sv table
 
     Args:
         sv (pandas.DataFrame): SV table
-        bundle (list): list of BreapointChain
+        bundle (list): list of ``BreapointChain``
 
     Returns:
-        list: Filtered list of BreakpointChain
+        list: Filtered list of ``BreakpointChain``
     """
     output_bundle = []
     sv_prop = {
@@ -297,7 +297,7 @@ def find_presence_of_matching_sv(sv1, sv2, margin=50):
     return match
 
 def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
-    """Get BreakpointChain list from BAM file according to an input SV table
+    """Get ``BreakpointChain`` list from BAM file according to an input SV table
 
     Args:
         bam_paths (pysam.AlignmentFile): BAM file
@@ -305,7 +305,7 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
         get_read_table (bool, optional): Return read table as well. Defaults to False.
 
     Returns:
-        list [, pandas.DataFrame]: List of BreakpointChain [, table of read alignment stats]
+        list [, pandas.DataFrame]: List of ``BreakpointChain`` [, table of read alignment stats]
     """
     complexes = []
     read_tables = pd.DataFrame()
@@ -322,10 +322,10 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
     return complexes
 
 def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
-    """Make SV table from list of BreakpointChain
+    """Make SV table from list of ``BreakpointChain``
 
     Args:
-        complexes (list): List of BreakpointChain
+        complexes (list): List of ``BreakpointChain``
         sv (pandas.DataFrame, optional): Table of source SVs as reference for `in_source` flag. Defaults to None
         margin (int, optional): Margin (bp) for merging clustered breakpoints. Defaults to 10.
         get_support (bool, optional): Merge breakpoints with same coordinates and add count as `support`. Defaults to True.
@@ -357,10 +357,10 @@ def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
     return tumor_sv
 
 def get_normalized_sv(tra):
-    """Sort (normalize) a BreakpointPair
+    """Sort (normalize) a ``BreakpointPair``
 
     Args:
-        tra (BreakpointPair): Pair of breakpoints
+        tra (``BreakpointPair``): Pair of breakpoints
 
     Returns:
         list: Sorted breakpoint coordinates, flattened

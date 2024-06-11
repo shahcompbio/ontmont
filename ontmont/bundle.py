@@ -7,10 +7,10 @@ from .irs import (get_best_onesided_ir, get_best_ir_within_breakpoints,
     get_best_holliday_junctions, get_best_ir_within_segment)
 
 def make_seg_table(bundle, seg_supports, segment_score_cutoff=5):
-    """Create a dataframe based on a BreakpointChain bundle and supports dict
+    """Create a dataframe based on a ``BreakpointChain`` bundle and supports dict
 
     Args:
-        bundle (list): List of BreakpointChain variables
+        bundle (list): List of ``BreakpointChain`` variables
         seg_supports (dict | pandas.Series): Number of support for each breakpoint coordinate
         segment_score_cutoff (int, optional): Alignment score cutoff the IR found in the segment. Defaults to 5.
 
@@ -68,7 +68,7 @@ def make_brk_table(bundle, brk_supports,
     """Create a dataframe of breakpoints
 
     Args:
-        bundle (list): List of BreakpointChain variables
+        bundle (list): List of ``BreakpointChain`` variables
         brk_supports (dict | pandas.Series): Number of support for each breakpoint coordinate
         unilateral_score_cutoff (int, optional): Alignment score cutoff for unilateral IR. Defaults to 5.
         bilateral_score_cutoff (int, optional): Alignment score cutoff for bilateral IR. Defaults to 8.
@@ -134,7 +134,7 @@ def make_brk_table(bundle, brk_supports,
 
 
 def make_brks_bundle(reads_df, genome, sw_palindrome, sw_holliday, margins=[15, 30, 60]):
-    """Make a list of BreapointChain based on alignment table, genome, and alignment parameters
+    """Make a list of ``BreapointChain`` based on alignment table, genome, and alignment parameters
 
     Args:
         reads_df (pandas.DataFrame): Table of read alignment statistics
@@ -144,7 +144,7 @@ def make_brks_bundle(reads_df, genome, sw_palindrome, sw_holliday, margins=[15, 
         margins (list, optional): Bases to slice from breakpoints. Defaults to [15, 30, 60].
 
     Returns:
-        list: list of BreakpointChain
+        list: List of ``BreakpointChain``
     """
     bundle = []
     margin_max = max(margins)
@@ -175,7 +175,7 @@ def make_brk_supports(bundle):
     """Count supports for unique breakpoint coordinates
 
     Args:
-        bundle (list): List of BreakpointChain
+        bundle (list): List of ``BreakpointChain``
 
     Returns:
         pandas.Series: Count of unique breakpoints, taking chrom, pos, ori into account
@@ -194,7 +194,7 @@ def make_tra_table(bundle, tra_supports):
     """Make a table of SVs based on bundle and number of supports
 
     Args:
-        bundle (list): List of BreakpointChain
+        bundle (list): List of ``BreakpointChain``
         tra_supports (dict | pandas.Series): Support count for SVs
 
     Returns:
