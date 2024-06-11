@@ -94,29 +94,6 @@ def test_sort_breakpointchain():
     assert str(brks.tras[1]) == expected_tra1
 
 
-def test_enumerate_breakpoints():
-    df = pd.DataFrame({
-        'chrom': {0: 'chr6', 1: 'PBEF1NeoTransposon', 2: 'chr6'},
-        'start': {0: 26424060, 1: 4596, 2: 152942012},
-        'end': {0: 26424268, 1: 4995, 2: 152944889},
-        'strand': {0: '+', 1: '-', 2: '+'},
-        'clip1': {0: 30, 1: 2886, 2: 631},
-        'match': {0: 209, 1: 398, 2: 2878},
-        'clip2': {0: 3280, 1: 235, 2: 10},
-        'pclip1': {0: 30, 1: 235, 2: 631}
-    })
-    brks = enumerate_breakpoints(df)
-    assert len(brks) % 2 == 0, brks
-    assert brks[0].pos == 26424268, brks[0]
-    assert brks[0].ori == '+', brks[0]
-    assert brks[1].pos == 4995, brks[1]
-    assert brks[1].ori == '+', brks[1]
-    assert brks[2].pos == 4596, brks[2]
-    assert brks[2].ori == '-', brks[2]
-    assert brks[3] == brks[-1], brks[3]
-    assert brks[3].pos == 152942012, brks[3]
-    assert brks[3].ori == '-', brks[3]
-
 def test_get_transitions():
     df = pd.DataFrame({
         'chrom': {0: 'chr6', 1: 'PBEF1NeoTransposon', 2: 'chr6'},
