@@ -18,11 +18,22 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
 
+def linkcode_resolve(domain, info):
+    """Determine the URL corresponding to Python object."""
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    filename = info['module'].replace('.', '/')
+    branch = 'main'
+    return f"https://github.com/shahcompbio/ontmont/blob/{branch}/{filename}.py"
+
 extensions = [
     'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx_autodoc_typehints',
+    'sphinx.ext.linkcode',
     'sphinx.ext.viewcode',
 ]
 
