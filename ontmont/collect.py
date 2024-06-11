@@ -123,10 +123,11 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
         margin (int, optional): Margin (bp) to merge close-by coordinates. Defaults to 10.
 
     Returns:
-        (tuple): tuple containing:
+        tuple: tuple containing:
         
-            coord_map (dict): src -> dst coordinate
-            coord_map_log (tuple): (max_coord, src_count, max_count) [only for debugging]
+            coord_map (``dict``): src -> dst coordinate
+
+            coord_map_log (`tuple`): (max_coord, src_count, max_count) [only for debugging]
     """
     coord_map = {}
     coord_map_log = {}
