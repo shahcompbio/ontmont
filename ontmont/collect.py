@@ -39,7 +39,7 @@ def extract_split_alignments(reads, max_reads=500):
             alignments.append(alignment)
     return alignments
 
-def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, min_n_breakpoint=3, margin=10):
+def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, min_n_breakpoint=2, margin=10):
     """Extract and append ``BreakpointChain`` objects from a bam file and a table of SVs
 
     Args:
@@ -296,7 +296,7 @@ def find_presence_of_matching_sv(sv1, sv2, margin=50):
             match |= _match
     return match
 
-def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
+def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False, min_n_breakpoint=2):
     """Get ``BreakpointChain`` list from BAM file according to an input SV table
 
     Args:
@@ -312,10 +312,10 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False):
     for bam_path in bam_paths:
         bam = pysam.AlignmentFile(bam_path)
         if get_read_table:
-            _complex, read_table = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table)
+            _complex, read_table = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint)
             read_tables = pd.concat([read_tables, read_table])
         else:
-            _complex = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table)
+            _complex = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint=)
         complexes += _complex
     if get_read_table:
         return complexes, read_tables

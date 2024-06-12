@@ -88,36 +88,6 @@ class BreakpointChain(list):
             self.segs.append(seg)
 
 
-class Sample:
-    long_samples = [ # class attribute
-        "14472B_201",
-        "14472B_202",
-        "14472B_500",
-        "14472B_501",
-        "14472C_203",
-        "14472C_204",
-        "14472C_502",
-        "14472D_101",
-        "14472D_102",
-        "14472D_103",
-        "14472D_104",
-        "14472D_205",
-        "14472_100",
-        "14472_300",
-    ]
-    sample2group = {s:s.split('_')[1][0] for s in long_samples}
-    sample2short = {s:s.split('_')[1] for s in long_samples}
-    
-    def __init__(self, long_sample):
-        self.long_sample = long_sample
-        self.group = self.sample2group[self.long_sample]
-        self.long_id = self.long_sample
-        self.id = self.sample2short[self.long_sample]
-
-    def __repr__(self):
-        return f'{self.id}'
-
-
 class Transitions:
     def __init__(self, df):
         self.df = df.copy()
