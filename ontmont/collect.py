@@ -315,7 +315,7 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False, min_n_b
             _complex, read_table = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint)
             read_tables = pd.concat([read_tables, read_table])
         else:
-            _complex = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint=)
+            _complex = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint)
         complexes += _complex
     if get_read_table:
         return complexes, read_tables

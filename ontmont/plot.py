@@ -669,7 +669,7 @@ def plot_vaf_on_axes(plot_data, vaf_axes, clone_colors, flt_ont_sv):
         vaf_axes[end_chrom].add_artist(legend)
         # sns.move_legend(ax, loc='upper left', bbox_to_anchor=(1, 1))
 
-def add_sv_legend_to_axes(sv_axes, svcolors, supports, alpha=0.5, loc1=(0.82, 0.5), loc2=(0.82, 0.0), size=8, alignment='left', show_support_legend=True):
+def add_sv_legend_to_axes(sv_axes, svcolors, supports=None, alpha=0.5, loc1=(0.82, 0.5), loc2=(0.82, 0.0), size=8, alignment='left', show_support_legend=True):
     if 'TRA' in svcolors:
         svcolors['TRA'] = 'black'
     with matplotlib.rc_context({'font.family':'Arial'}):
@@ -682,7 +682,7 @@ def add_sv_legend_to_axes(sv_axes, svcolors, supports, alpha=0.5, loc1=(0.82, 0.
         legend1 = ax.legend(handles=handle1, labels=svcolors.keys(), title="types", loc=loc1, prop={'size':size}, frameon=False, handletextpad=0.1, alignment=alignment)
         ax.add_artist(legend1);
 
-        if supports.size > 0:
+        if type(supports) == type(None):
             supports = [int(x) for x in sorted(supports)]
             min_support, max_support = min(supports), max(supports)
             sizes = {min_support:min_support, max_support:max_support}
