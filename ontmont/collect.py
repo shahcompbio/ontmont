@@ -170,7 +170,7 @@ def fix_lower_support_coordinates(complexes, coord_map):
 
 def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2', 
                       pos1_col='position_1', pos2_col='position_2', 
-                      ori1_col='strand_1', ori2_col='strand_2'):
+                      ori1_col='strand_1', ori2_col='strand_2', chroms=None):
     """Sort breakpoint1 and breakpoint2 of a SV table
 
     Args:
@@ -181,13 +181,15 @@ def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2',
         pos2_col (str, optional): Defaults to 'position_2'.
         ori1_col (str, optional): Defaults to 'strand_1'.
         ori2_col (str, optional): Defaults to 'strand_2'.
+        chroms (list, optional): List of input contigs for coordinate sorting. Defaults to None.
 
     Returns:
         pandas.DataFrame: Sorted (normalized) SV table
     """
     sv = sv.copy()
-    chroms = [str(c) for c in range(1, 22+1)]+['X', 'Y']
-    chroms += ['chr'+c for c in chroms] # chr prefices
+    if chroms is None:
+        chroms = [str(c) for c in range(1, 22+1)]+['X', 'Y']
+        chroms += ['chr'+c for c in chroms] # chr prefices
     chrom_map = dict(zip(chroms, range(len(chroms))))
     assert (~sv[chrom1_col].isin(chroms)).sum() == 0, sv[chrom1_col].unique()
     assert (~sv[chrom2_col].isin(chroms)).sum() == 0, sv[chrom2_col].unique()
