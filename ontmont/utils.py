@@ -178,7 +178,7 @@ def extract_split_alignments(bam, chroms_proc):
 
 def make_split_read_table(alignments):
     sa_cols = ['qname', 'chrom', 'start', 'end', 'strand', 'clip1', 'match', 'clip2', 'pclip1']
-    df = pd.DataFrame(columns=sa_cols)
+    data = []
     for alignment in alignments:
         qname = alignment.read_name
         chrom = alignment.refname
@@ -190,7 +190,9 @@ def make_split_read_table(alignments):
         match = alignment.match
         pclip1 = alignment.pclip1
         field = [qname, chrom, start, end, strand, clip1, match, clip2, pclip1]
-        df.loc[df.shape[0]] = field
+        data.append(field)
+        # df.loc[df.shape[0]] = field
+    df = pd.DataFrame(data, columns=sa_cols)
     df.drop_duplicates(inplace=True)
     df.sort_values(by=['qname', 'pclip1'], inplace=True)
     return df.reset_index(drop=True)

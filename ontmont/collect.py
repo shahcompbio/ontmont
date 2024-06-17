@@ -340,7 +340,7 @@ def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
     complexes = fix_lower_support_coordinates(complexes, coord_map)
     # breakpoint_support_post = get_breakpoint_support_from_bundle(complexes)
     sv_cols = ['chromosome_1', 'position_1', 'strand_1', 'chromosome_2', 'position_2', 'strand_2', 'type']
-    tumor_sv = pd.DataFrame(columns=sv_cols)
+    data = []
     for brks in complexes:
         for tra in brks.tras:
             svtype = get_svtype(tra)
@@ -348,7 +348,8 @@ def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
             pos1, pos2 = tra.brk1.pos, tra.brk2.pos
             ori1, ori2 = tra.brk1.ori, tra.brk2.ori
             field = [chrom1, pos1, ori1, chrom2, pos2, ori2, svtype]
-            tumor_sv.loc[tumor_sv.shape[0]] = field
+            data.append(field)
+    tumor_sv = pd.DataFrame(data, columns=sv_cols)
     tumor_sv = normalize_sv_table(tumor_sv)
     ix_cols = ['chromosome_1', 'position_1', 'strand_1', 'chromosome_2', 'position_2', 'strand_2', 'type']
     if get_support:
