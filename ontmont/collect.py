@@ -39,6 +39,27 @@ def extract_split_alignments(reads, max_reads=500):
             alignments.append(alignment)
     return alignments
 
+def extract_read_data(bam:pysam.AlignmentFile, contig:str, start=None, end=None) -> pd.DataFrame:
+    """Extract alignment tables per read and concatenate
+
+    Args:
+        bam (pysam.AlignmentFile): BAM file
+        contig (str): Contig to extract reads from
+        start (int, optional): 1-based start position
+        start (int, optional): 1-based end position
+        bam (pysam.AlignmentFile): BAM file
+
+    Returns:
+        pd.DataFrame: Dataframe of alignment data concatenated across all reads in the region
+    """
+    if start is not None:
+        start -= 1
+    reads = bam.fetch(contig=contig, start=start, end=end) # convert to 0-based pos
+    alignments = extract_split_alignments(reads)
+    df = make_split_read_table(alignments)
+    return df
+    
+
 def pull_breakpoints_from_reads_in_sv_regions(bam, tra, get_read_table=False, min_n_breakpoint=2, margin=10):
     """Extract and append ``BreakpointChain`` objects from a bam file and a table of SVs
 

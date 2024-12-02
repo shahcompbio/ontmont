@@ -1,10 +1,15 @@
+import os
 import pytest
+
+import pysam
+import numpy as np
 import pandas as pd
 
 from ontmont.datatypes import Breakpoint, BreakpointPair, BreakpointChain
 
 from ontmont.collect import (map_similar_coordinate_to_higher_rank, fix_lower_support_coordinates, 
-    get_breakpoint_support_from_bundle, normalize_sv_table, pull_sv_supporting_reads_from_bundle, find_presence_of_matching_sv)
+    get_breakpoint_support_from_bundle, normalize_sv_table, pull_sv_supporting_reads_from_bundle, find_presence_of_matching_sv,
+    extract_read_data)
 
 @pytest.fixture
 def bundle():
@@ -106,3 +111,30 @@ def test_find_presence_of_matching_sv():
     ], columns=ix_cols+['match'])
     sv1['match'] = find_presence_of_matching_sv(sv1, sv2, margin=50)
     assert (sv1 != expected).sum().sum() == 0, sv1
+
+def test_extract_read_data_1():
+    bam_path = 'tests/data/test.bam'
+    assert os.path.exists(bam_path), f'{bam_path} does not exist.'
+    bam = pysam.AlignmentFile(bam_path)
+    df = extract_read_data(bam, contig='PBEF1NeoTransposon', start=1, end=2)
+    assert df.shape[0] == 0, df
+
+def test_extract_read_data_2():
+    bam_path = 'tests/data/test.bam'
+    assert os.path.exists(bam_path), f'{bam_path} does not exist.'
+    bam = pysam.AlignmentFile(bam_path)
+    df = extract_read_data(bam, contig='PBEF1NeoTransposon', start=1470, end=1477)
+    assert df.shape[0] == 0, df
+
+def test_extract_read_data_3():
+    expected = np.array([['02ce28f5-83e5-53a4-a7ed-96f331c6b305', 'chr10', 51339923,
+        51340887, '+', 35, 960, 3763, 35],
+       ['02ce28f5-83e5-53a4-a7ed-96f331c6b305', 'PBEF1NeoTransposon',
+        1478, 4996, '-', 288, 3480, 990, 990],
+       ['02ce28f5-83e5-53a4-a7ed-96f331c6b305', 'chr10', 51340883,
+        51341166, '+', 4466, 281, 11, 4466]])
+    bam_path = 'tests/data/test.bam'
+    assert os.path.exists(bam_path), f'{bam_path} does not exist.'
+    bam = pysam.AlignmentFile(bam_path)
+    df = extract_read_data(bam, contig='PBEF1NeoTransposon', start=1477, end=1478)
+    assert np.all(df.to_numpy().astype(str) == expected.astype(str))
