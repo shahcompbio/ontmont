@@ -120,26 +120,26 @@ def make_brks_bundle(reads_df):
         bundle.append(brks)
     return bundle
 
-def get_breakpoint_support_from_bundle(complexes):
+def get_breakpoint_support_from_bundle(bundle):
     """Get breakpoint support count
 
     Args:
-        complexes (list): List of ``BreakpointChain``
+        bundle (list): List of ``BreakpointChain``
 
     Returns:
         collections.Counter: Support for str(``Breakpoint``) coordinates
     """
     breakpoint_support = Counter()
-    for brks in complexes:
+    for brks in bundle:
         for brk in brks:
             breakpoint_support[str(brk)] += 1
     return breakpoint_support
 
-def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=10):
+def map_similar_coordinate_to_higher_rank(bundle, breakpoint_support, margin=10):
     """Make mapping of close-by coordinates, with breakpoints of higher support taking priority
 
     Args:
-        complexes (list): List of ``BreakpointChain``
+        bundle (list): List of ``BreakpointChain``
         breakpoint_support (dict | collections.Counter): Support for breakpoint coordinates
         margin (int, optional): Margin (bp) to merge close-by coordinates. Defaults to 10.
 
@@ -152,7 +152,7 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
     """
     coord_map = {}
     coord_map_log = {}
-    for cix, brks in enumerate(complexes):
+    for cix, brks in enumerate(bundle):
         for bix, brk in enumerate(brks):
             chrom, pos, ori = brk.chrom, brk.pos, brk.ori 
             src_coord = str(brk)
@@ -170,24 +170,24 @@ def map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=
             coord_map_log[src_coord] = (max_coord, src_count, max_count)
     return coord_map, coord_map_log
 
-def fix_lower_support_coordinates(complexes, coord_map):
+def fix_lower_support_coordinates(bundle, coord_map):
     """Map breakpoint of lower support to close-by breakpoint with higher support
 
     Args:
-        complexes (list): List of ``BreakpointChain``
+        bundle (list): List of ``BreakpointChain``
         coord_map (dict): Map of str(``Breakpoint``) coordinates
 
     Returns:
         list: List of ``BreakpointChain``, mapped to fixed coordinates
     """
-    for cix, brks in enumerate(complexes):
+    for cix, brks in enumerate(bundle):
         for bix, brk in enumerate(brks):
             src_coord = str(brk)
             dst_coord = coord_map[src_coord]
             dst_chrom, dst_pos, dst_ori = dst_coord.split(':')
             dst_pos = int(dst_pos)
-            complexes[cix][bix].pos = dst_pos
-    return complexes
+            bundle[cix][bix].pos = dst_pos
+    return bundle
 
 def normalize_sv_table(sv, chrom1_col='chromosome_1', chrom2_col='chromosome_2', 
                       pos1_col='position_1', pos2_col='position_2', 
@@ -330,7 +330,7 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False, min_n_b
     Returns:
         list [, pandas.DataFrame]: List of ``BreakpointChain`` [, table of read alignment stats]
     """
-    complexes = []
+    bundle = []
     read_tables = pd.DataFrame()
     for bam_path in bam_paths:
         bam = pysam.AlignmentFile(bam_path)
@@ -339,16 +339,16 @@ def pull_breakpoints_from_bam_files(bam_paths, sv, get_read_table=False, min_n_b
             read_tables = pd.concat([read_tables, read_table])
         else:
             _complex = pull_breakpoints_from_reads_in_sv_regions(bam, sv, get_read_table=get_read_table, min_n_breakpoint=min_n_breakpoint)
-        complexes += _complex
+        bundle += _complex
     if get_read_table:
-        return complexes, read_tables
-    return complexes
+        return bundle, read_tables
+    return bundle
 
-def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
+def make_tumor_sv_table(bundle, sv=None, margin=10, get_support=True):
     """Make SV table from list of ``BreakpointChain``
 
     Args:
-        complexes (list): List of ``BreakpointChain``
+        bundle (list): List of ``BreakpointChain``
         sv (pandas.DataFrame, optional): Table of source SVs as reference for `in_source` flag. Defaults to None
         margin (int, optional): Margin (bp) for merging clustered breakpoints. Defaults to 10.
         get_support (bool, optional): Merge breakpoints with same coordinates and add count as `support`. Defaults to True.
@@ -356,13 +356,13 @@ def make_tumor_sv_table(complexes, sv=None, margin=10, get_support=True):
     Returns:
         pandas.DataFrame: SV table from bundle [, with `in_source` labels] [, collapsed by coordinate with support counts]
     """
-    breakpoint_support = get_breakpoint_support_from_bundle(complexes)
-    coord_map, coord_map_log = map_similar_coordinate_to_higher_rank(complexes, breakpoint_support, margin=margin)
-    complexes = fix_lower_support_coordinates(complexes, coord_map)
-    # breakpoint_support_post = get_breakpoint_support_from_bundle(complexes)
+    breakpoint_support = get_breakpoint_support_from_bundle(bundle)
+    coord_map, coord_map_log = map_similar_coordinate_to_higher_rank(bundle, breakpoint_support, margin=margin)
+    bundle = fix_lower_support_coordinates(bundle, coord_map)
+    # breakpoint_support_post = get_breakpoint_support_from_bundle(bundle)
     sv_cols = ['chromosome_1', 'position_1', 'strand_1', 'chromosome_2', 'position_2', 'strand_2', 'type']
     data = []
-    for brks in complexes:
+    for brks in bundle:
         for tra in brks.tras:
             svtype = get_svtype(tra)
             chrom1, chrom2 = tra.brk1.chrom, tra.brk2.chrom
