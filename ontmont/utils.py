@@ -6,7 +6,7 @@ import numpy as np
 from .datatypes import Breakpoint, BreakpointChain, SplitAlignment
 
 def remove_duplicates_from_tra_table(tra_df):
-    df = pd.DataFrame(columns = tra_df.columns)
+    data = []
     
     vectors = [
         'DelPBEF1NeoTransposon',
@@ -42,7 +42,8 @@ def remove_duplicates_from_tra_table(tra_df):
         field = [chrom1, pos1, ori1, chrom2, pos2, ori2, support, 
             u1_u2_score, d1_d2_score, u1_d2r_score, d1_u2r_score,
             u1_u2_pvalue, d1_d2_pvalue, u1_d2r_pvalue, d1_u2r_pvalue]
-        df.loc[df.shape[0]] = field
+        data.append(field)
+    df = pd.DataFrame(data, columns=tra_df.columns)
     
     ix_cols = ['chrom1', 'pos1', 'ori1', 'chrom2', 'pos2', 'ori2']
     df = df.groupby(ix_cols).agg({

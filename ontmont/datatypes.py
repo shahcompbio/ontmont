@@ -132,7 +132,8 @@ class Segments:
             n_fragments = qdf.shape[0]
             if n_fragments <= 2: continue # don't count segments when none
             for rix, row in qdf.iterrows():
-                if rix == 0 or rix == n_fragments-1: continue
+                if rix == 0 or rix == n_fragments-1:
+                    continue
                 chrom, start, end = row['chrom'], int(row['start']), int(row['end'])
                 segment = (chrom, start, end)
                 self.list.append(segment)
@@ -210,6 +211,7 @@ class BreakpointPair:
     def __init__(self, brk1, brk2):
         self.brk1 = brk1
         self.brk2 = brk2
+        self.aln_segment = False
 
     def __repr__(self):
         return f'{self.brk1.chrom}:{self.brk1.pos}:{self.brk1.ori}-{self.brk2.chrom}:{self.brk2.pos}:{self.brk2.ori}'

@@ -39,7 +39,7 @@ def extract_split_alignments(reads, max_reads=500):
             alignments.append(alignment)
     return alignments
 
-def extract_read_data(bam:pysam.AlignmentFile, contig:str, start=None, end=None) -> pd.DataFrame:
+def extract_read_data(bam:pysam.AlignmentFile, contig:str, start=None, end=None, max_reads=500) -> pd.DataFrame:
     """Extract alignment tables per read and concatenate
 
     Args:
@@ -47,7 +47,7 @@ def extract_read_data(bam:pysam.AlignmentFile, contig:str, start=None, end=None)
         contig (str): Contig to extract reads from
         start (int, optional): 1-based start position
         start (int, optional): 1-based end position
-        bam (pysam.AlignmentFile): BAM file
+        max_reads (int, optional): Maximum number of reads to extract. Defaults to 500.
 
     Returns:
         pd.DataFrame: Dataframe of alignment data concatenated across all reads in the region
@@ -55,7 +55,7 @@ def extract_read_data(bam:pysam.AlignmentFile, contig:str, start=None, end=None)
     if start is not None:
         start -= 1
     reads = bam.fetch(contig=contig, start=start, end=end) # convert to 0-based pos
-    alignments = extract_split_alignments(reads)
+    alignments = extract_split_alignments(reads, max_reads=max_reads)
     df = make_split_read_table(alignments)
     return df
     

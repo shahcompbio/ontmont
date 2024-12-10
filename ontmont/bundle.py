@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import tqdm
 
 from .utils import (remove_duplicates_from_tra_table, 
     filter_sv_with_breakpoint_at_contig_ends, filter_breakpoints_at_contig_ends, enumerate_breakpoints)
@@ -30,10 +31,11 @@ def make_seg_table(bundle, seg_supports, segment_score_cutoff=5, label_irs=False
     data = []
     
     for brks in bundle:
-        for ix, seg in enumerate(brks.segs):
+        for seg in brks.segs:
             assert seg.brk1.chrom == seg.brk2.chrom
             chrom = seg.brk1.chrom
-            if chrom not in chrom_order: continue #
+            if chrom not in chrom_order: 
+                continue
             pos1 = seg.brk1.pos
             pos2 = seg.brk2.pos
             ori1 = seg.brk1.ori
@@ -50,12 +52,14 @@ def make_seg_table(bundle, seg_supports, segment_score_cutoff=5, label_irs=False
             if coord not in seg_supports:
                 continue
             support = seg_supports[coord]
+            field = [*coord, support]
+
             if seg.aln_segment:
                 _segment_score = seg.aln_segment.score
                 if _segment_score >= segment_score_cutoff:
                     segment_score = _segment_score
                     segment_pvalue = seg.aln_segment.pvalue
-            field = [*coord, support]
+            
             if label_irs:
                 field += [segment_score, segment_pvalue]
             data.append(field)
@@ -90,7 +94,7 @@ def make_brk_table(bundle, brk_supports,
     ]
     chrom_order = ['chr'+str(c) for c in range(1, 22)] + ['chrX', 'chrY'] + vectors
     brk_saved = set()
-    
+    data = []
     for brks in bundle:
         for brk in brks:
             if brk.chrom not in chrom_order: continue
@@ -139,7 +143,7 @@ def make_brk_table(bundle, brk_supports,
     return brk_df
 
 
-def make_aligned_brks_bundle(reads_df, genome=None, sw_palindrome=None, sw_holliday=None, margins=[15, 30, 60]):
+def make_aligned_brks_bundle(reads_df, genome=None, sw_palindrome=None, sw_holliday=None, margins=(15, 30, 60), track_progress=False):
     """Make a list of ``BreapointChain`` based on alignment table, genome, and alignment parameters
 
     Args:
@@ -147,20 +151,22 @@ def make_aligned_brks_bundle(reads_df, genome=None, sw_palindrome=None, sw_holli
         genome (pyfaidx.Fasta): Genome fasta
         sw_palindrome (swalign.LocalAlignment): Parameters for detecting IR
         sw_holliday (swalign.LocalAlignment): Parameters for detecting homology
-        margins (list, optional): Bases to slice from breakpoints. Defaults to [15, 30, 60].
+        margins (list, optional): Bases to slice from breakpoints. Defaults to (15, 30, 60).
 
     Returns:
         list: List of ``BreakpointChain``
     """
     bundle = []
     margin_max = max(margins)
-    for qname, qdf in reads_df.groupby('qname'):
+    iterable = reads_df.groupby('qname')
+    iterable = tqdm.tqdm(iterable) if track_progress else iterable
+    for qname, qdf in iterable:
         brks = enumerate_breakpoints(qdf)
         brks.qname = qname
         brks.get_transitions()
         brks.get_segments()
 
-        flag_align = sw_palinedrome and sw_holliday
+        flag_align = sw_palindrome and sw_holliday
         if flag_align: # find IRs through SW alignment
             for brk in brks:
                 brk.get_breakpoint_seqs(margin=margin_max, genome=genome)
@@ -216,7 +222,7 @@ def make_tra_table(bundle, tra_supports, label_irs=False):
     tra_saved = set()
     data = []
     for brks in bundle:
-        for ix, tra in enumerate(brks.tras):
+        for tra in brks.tras:
             coord1 = (tra.brk1.chrom, tra.brk1.pos, tra.brk1.ori)
             coord2 = (tra.brk2.chrom, tra.brk2.pos, tra.brk2.ori)
             coord_pair = (coord1, coord2)
@@ -245,6 +251,7 @@ def make_tra_table(bundle, tra_supports, label_irs=False):
         tra_cols += [f'{key}_pvalue' for key in key_pairs]
     tra_df = pd.DataFrame(data, columns=tra_cols)
     tra_df = filter_sv_with_breakpoint_at_contig_ends(tra_df)
-    tra_df = remove_duplicates_from_tra_table(tra_df)
+    if label_irs:
+        tra_df = remove_duplicates_from_tra_table(tra_df)
     tra_df.replace([-np.inf, np.inf], np.nan, inplace=True) 
     return tra_df
