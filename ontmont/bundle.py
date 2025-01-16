@@ -197,12 +197,13 @@ def make_brk_supports(bundle):
     Returns:
         pandas.Series: Count of unique breakpoints, taking chrom, pos, ori into account
     """
-    df = pd.DataFrame(columns=['chrom', 'pos', 'ori'])
+    data = []
     for brks in bundle:
         for brk in brks:
             chrom, pos, ori = brk.chrom, brk.pos, brk.ori
             field = [chrom, pos, ori]
-            df.loc[df.shape[0]] = field
+            data.append(field)
+    df = pd.DataFrame(data, columns=['chrom', 'pos', 'ori'])
     brk_supports = df.value_counts()
     return brk_supports
 
